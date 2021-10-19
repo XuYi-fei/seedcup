@@ -40,7 +40,8 @@ class Fake1DAttention(nn.Module):
         """
         super().__init__()
 
-        self.attn1 = nn.parameter.Parameter(torch.randn(in_features), requires_grad=True)
+        self.attn1 = nn.parameter.Parameter(
+            torch.randn(in_features), requires_grad=True)
         self.fc1 = nn.Linear(in_features, in_features)
         self.activation1 = nn.ReLU()
         self.bn1 = nn.BatchNorm1d(in_features)

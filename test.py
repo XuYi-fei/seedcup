@@ -7,11 +7,16 @@ import pandas as pd
 
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--model', help="path to model", type=str, default="./checkpoints/24_epoc.pt")
-    parser.add_argument('-i', '--input', help="path to input files", type=str, default="./data/v1/test_a.csv")
-    parser.add_argument('-o', '--output', help="path to output files", type=str, default="output_a.txt")
-    parser.add_argument('--input-features', help="input dimension for model", type=int, default=28)
-    parser.add_argument('--output-features', help="output dimension for model", type=int, default=2)
+    parser.add_argument('--model', help="path to model",
+                        type=str, default="./checkpoints/unevol/24_epoc.pt")
+    parser.add_argument('-i', '--input', help="path to input files",
+                        type=str, default="./data/v1/test_a.csv")
+    parser.add_argument(
+        '-o', '--output', help="path to output files", type=str, default="output_a.txt")
+    parser.add_argument('--input-features',
+                        help="input dimension for model", type=int, default=28)
+    parser.add_argument('--output-features',
+                        help="output dimension for model", type=int, default=2)
 
     return parser.parse_args()
 
