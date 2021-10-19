@@ -104,19 +104,19 @@ if __name__ == '__main__':
 
     torch.manual_seed(777)
     # device = torch.device('cpu')
-    device = torch.device('cuda')
+    device = torch.device('cpu')
 
-    batch_size, in_features, out_features = 30, 28, 2
+    batch_size, in_features, out_features = 30, 28-2, 2
     lr, positive_weight = 1e-3, 2.33
-    epochs = 30
+    epochs = 50
 
     loss_fn = nn.CrossEntropyLoss()
 
-    train_dataset = SeedDataset("./data/v1/train.csv")
+    train_dataset = SeedDataset("./data/v1_p/train.csv")
     train_dataloader = DataLoader(
         train_dataset, batch_size=batch_size, shuffle=True)
 
-    valid_dataset = SeedDataset("./data/v1/valid.csv")
+    valid_dataset = SeedDataset("./data/v1_p/valid.csv")
     valid_dataloader = DataLoader(valid_dataset, batch_size=1, shuffle=False)
 
     if(os.path.isdir(f"./checkpoints") == 0):
@@ -163,7 +163,7 @@ if __name__ == '__main__':
             optimizer = optim.Adagrad(model.parameters(), lr=lr)
 
             # Train
-            for t in range(epochs):
+            for t in range(30):
                 print(
                     "---------------------------------------\n"f"{Fore.GREEN + '===>'} Generate[{g}] --- Epoch{t + 1} {'' + Fore.RESET}:")
                 train(train_dataloader, model, loss_fn,
