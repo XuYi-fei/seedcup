@@ -31,7 +31,7 @@ class TreeTestSeedDataset:
 def train():
     model = tree.DecisionTreeqClassifier(max_depth=config.max_depth, criterion=config.criterion,
                                         splitter=config.splitter)
-    dataset = TreeTrainSeedDataset("./data/v1/train.csv")
+    dataset = TreeTrainSeedDataset(config.train_data)
     model = model.fit(dataset.X, dataset.Y)
 
     # draw the tree, output file is named by current time
@@ -46,7 +46,7 @@ def train():
 def test():
     with open(config.model, 'rb') as input:
         model = pickle.load(input)
-    dataset = TreeTestSeedDataset("./data/v1/test_a.csv")
+    dataset = TreeTestSeedDataset(config.test_data)
     result = model.predict(dataset.X)
     result = map(lambda x : str(x), result)
     with open("result.txt", "w") as f:
