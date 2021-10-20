@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from pandas.core.frame import DataFrame
 
 
@@ -39,40 +40,41 @@ def delete_columns() -> None:
 
 def add_track() -> None:
     user_track = DataFrame(pd.read_csv("data/original/user_track.csv"))
-    work_day_count = [0] * 37045
-    weekend_day_count = [0] * 37045
-    avg_early_hour = [0.0] * 37045
-    avg_last_hour = [0.0] * 37045
-    count = 0
-    last_id = 0
-
-    for i in range(user_track.shape[0]):
-        if(last_id != user_track['id'][i]):
-            count = 0
-
-        # 统计登录日期类型
-        work_day_count[user_track['id'][i]] = user_track['is_weekend'][i] == 0
-        weekend_day_count[user_track['id'][i]
-                          ] = user_track['is_weekend'][i] == 0
-        # 统计评价最早最晚登录时间
-        count += 1
-        avg_early_hour[user_track['id'][i]
-                       ] = (avg_early_hour[user_track['id'][i]] * (count-1) + user_track['early_hour'][i]) / count
-        avg_last_hour[user_track['id'][i]
-                      ] = (avg_last_hour[user_track['id'][i]] * (count-1) + user_track['last_hour'][i]) / count
-
-        last_id = user_track['id'][i]
-
-    # 保存到 all_info
     user_all_info = DataFrame(pd.read_csv(
         "data/original/user_all_info.csv"))
+    work_day_count = [0] * (user_all_info.shape[0]+1)
+    weekend_day_count = [0] * (user_all_info.shape[0]+1)
+    avg_early_hour = [0.0] * (user_all_info.shape[0]+1)
+    avg_last_hour = [0.0] * (user_all_info.shape[0]+1)
+    total_day = [0]* (user_all_info.shape[0]+1)
+
+
+    for i in range(user_track.shape[0]):
+        # 统计登录日期类型
+        total_day[user_track['id'][i]] += 1
+        work_day_count[user_track['id'][i]] += user_track['is_weekend'][i] == 0
+        weekend_day_count[user_track['id'][i]
+                          ] += user_track['is_weekend'][i] != 0
+        # 统计评价最早最晚登录时间
+        avg_early_hour[user_track['id'][i]
+                       ] = (avg_early_hour[user_track['id'][i]] * (total_day[user_track['id'][i]]-1) + user_track['early_hour'][i]) / total_day[user_track['id'][i]]
+        avg_last_hour[user_track['id'][i]
+                      ] = (avg_last_hour[user_track['id'][i]] * (total_day[user_track['id'][i]]-1) + user_track['last_hour'][i]) / total_day[user_track['id'][i]]
+
+    # 保存到 all_info
+    work_day_count.pop(0)
+    weekend_day_count.pop(0)
+    avg_early_hour.pop(0)
+    avg_last_hour.pop(0)
+    total_day.pop(0)
+    user_all_info['total_day'] = total_day
     user_all_info['work_day_rate'] = [
-        m/(m+n+0.001) for m, n in zip(work_day_count, weekend_day_count)]
+        m/(n+0.001) for m, n in zip(work_day_count, total_day)]
     user_all_info['weekend_day_rate'] = [
-        n/(m+n+0.001) for m, n in zip(work_day_count, weekend_day_count)]
+        m/(n+0.001) for m, n in zip(weekend_day_count, total_day)]
     user_all_info['avg_early_hour'] = avg_early_hour
     user_all_info['avg_last_hour'] = avg_last_hour
-    user_all_info.to_csv("data/original/user_all_info1.csv")
+    user_all_info.to_csv("data/original/all_info.csv")
 
 
 if __name__ == "__main__":

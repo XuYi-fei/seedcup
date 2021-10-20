@@ -59,3 +59,20 @@ user_track数据补充到总表
 loss_fn多采用几种
 
 optimizer多采用几种
+
+&nbsp;
+
+&nbsp;
+
+&nbsp;
+
+# 2021.10.20
+
+## 改动了数据集
+
+从user_track中提取出总登录次数 total_day、工作日登录比例 work_day_rate、周末登录比例 weekend_day_rate、平均第一次登陆时间 avg_early_hour、平均最后一次登录时间avg_last_hour，现在完整数据见 data\original\all.info.csv
+
+
+
+测试了昨天删除 `认证年龄、导流渠道`后40轮训练的效果，0.6336，太拉了
+
