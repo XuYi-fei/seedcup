@@ -92,8 +92,8 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--evol', action='store_true',
                         help="hyperparameters auto evolve")
-    parser.add_argument('--model', help="train with last model",
-                        type=str, default="./checkpoints/ungenerate/24_epoc.pt")
+    # parser.add_argument('--model', help="train with last model",
+    #                     type=str, default="./checkpoints/unevol/24_epoc.pt")
 
     return parser.parse_args()
 
@@ -106,7 +106,7 @@ if __name__ == '__main__':
     # device = torch.device('cpu')
     device = torch.device('cpu')
 
-    batch_size, in_features, out_features = 30, 28-2, 2
+    batch_size, in_features, out_features = 30, 33, 2
     lr, positive_weight = 1e-3, 2.33
     epochs = 50
 

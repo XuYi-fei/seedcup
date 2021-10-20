@@ -14,7 +14,7 @@ def parse_args():
     parser.add_argument(
         '-o', '--output', help="path to output files", type=str, default="output_a.txt")
     parser.add_argument('--input-features',
-                        help="input dimension for model", type=int, default=28-2)
+                        help="input dimension for model", type=int, default=33)
     parser.add_argument('--output-features',
                         help="output dimension for model", type=int, default=2)
 

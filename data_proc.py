@@ -1,9 +1,11 @@
+import random
 import pandas as pd
 import numpy as np
 from pandas.core.frame import DataFrame
 
 
 def get_all_info() -> None:
+    # 合并base_info和his_feature
     user_base_info = DataFrame(pd.read_csv(
         "./data/original/user_base_info.csv"))
     user_his_features = DataFrame(pd.read_csv(
@@ -14,31 +16,22 @@ def get_all_info() -> None:
 
 
 def delete_columns() -> None:
+    # 删除训练集和验证集中的无用列
     # x = ['real_age', 'utm_channel', 'add_all_num', 'view_all_num', 'msg_all_num']
     x = ['real_age', 'utm_channel']
 
-    test_a = DataFrame(pd.read_csv("data/v1/test_a.csv"))
-    train = DataFrame(pd.read_csv("data/v1/train.csv"))
-    valid = DataFrame(pd.read_csv("data/v1/valid.csv"))
-    all_info = DataFrame(pd.read_csv("data/v2/all_info.csv"))
-    test_a_info = DataFrame(pd.read_csv("data/v2/test_a_info.csv"))
+    train = DataFrame(pd.read_csv("data/train/train.csv"))
+    valid = DataFrame(pd.read_csv("data/train/valid.csv"))
 
-    test_a.drop(columns=x, inplace=True)
     train.drop(columns=x, inplace=True)
     valid.drop(columns=x, inplace=True)
-    all_info.drop(columns=x, inplace=True)
-    test_a_info.drop(columns=x, inplace=True)
 
-    test_a.to_csv("data/v1_p/test_a.csv", sep=',', index=False, header=True)
-    train.to_csv("data/v1_p/train.csv", sep=',', index=False, header=True)
-    valid.to_csv("data/v1_p/valid.csv", sep=',', index=False, header=True)
-    all_info.to_csv("data/v2_p/all_info.csv",
-                    sep=',', index=False, header=True)
-    test_a_info.to_csv("data/v2_p/test_a_info.csv",
-                       sep=',', index=False, header=True)
+    train.to_csv("data/train/train.csv", sep=',', index=False, header=True)
+    valid.to_csv("data/train/valid.csv", sep=',', index=False, header=True)
 
 
 def add_track() -> None:
+    # 把user_track信息填到总数据集中
     user_track = DataFrame(pd.read_csv("data/original/user_track.csv"))
     user_all_info = DataFrame(pd.read_csv(
         "data/original/user_all_info.csv"))
@@ -46,8 +39,7 @@ def add_track() -> None:
     weekend_day_count = [0] * (user_all_info.shape[0]+1)
     avg_early_hour = [0.0] * (user_all_info.shape[0]+1)
     avg_last_hour = [0.0] * (user_all_info.shape[0]+1)
-    total_day = [0]* (user_all_info.shape[0]+1)
-
+    total_day = [0] * (user_all_info.shape[0]+1)
 
     for i in range(user_track.shape[0]):
         # 统计登录日期类型
@@ -77,6 +69,16 @@ def add_track() -> None:
     user_all_info.to_csv("data/original/all_info.csv")
 
 
+def generate_test() -> None:
+    test_a = DataFrame(pd.read_csv("data/original/test_a.csv"))
+    all_info = DataFrame(pd.read_csv("data/train/all_info.csv"))
+
+    result = all_info.merge(test_a, how='right', on='id')
+    result.drop(columns=['label'], inplace=True)
+    result.to_csv("data/test/test_info.csv", sep=',', index=False, header=True)
+
+
 if __name__ == "__main__":
-    add_track()
+    # add_track()
     # delete_columns()
+    generate_test()
