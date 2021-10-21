@@ -59,3 +59,11 @@ hyper_evol.py、train_modified.py
 `python train_modified --evol`
 
 &nbsp;
+
+# History目录
+
+用于记录已提交文件测试效果及对应网络参数文件等
+
+`/baseline` 下为原始神经网络的测试结果，文件命名格式：`数据维度_训练轮数_测试分数`
+
+`/baseline+残差` 下为加入残差部分，文件命名格式：`数据维度_训练轮数_测试分数`
