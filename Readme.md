@@ -7,9 +7,9 @@
 # 决策树说明
 ### 代码说明
 
-- ``decision_tree.py``: 运行决策树train和test的文件
+- ``decision_tree.py``: 运行决策树train和test的文件;train中会自动运行valid模块
 - ``config/tree_decistion_config.py``: 决策树的相关配置
-- train后会生成一个pdf和一个模型文件，pdf是决策树的可视化pdf;模型文件保存在treeCheckpoints下
+- train后会生成一个pdf和一个模型文件，pdf是决策树的可视化pdf,文件保存在treeCheckpoints下
 - test时需要指定具体的模型文件
 ### 运行说明
 
