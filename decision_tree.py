@@ -28,33 +28,43 @@ class TreeTestSeedDataset:
         self.X = np.array(self.X).tolist()
 
 
-def train():
-    model = tree.DecisionTreeqClassifier(max_depth=config.max_depth, criterion=config.criterion,
+def TrainModel() -> None:
+    model = tree.DecisionTreeClassifier(max_depth=config.max_depth, criterion=config.criterion,
                                         splitter=config.splitter)
     dataset = TreeTrainSeedDataset(config.train_data)
     model = model.fit(dataset.X, dataset.Y)
-
+    acc = ValidModel(model)
     # draw the tree, output file is named by current time
     dot_data = tree.export_graphviz(model, out_file=None)
-    graph = graphviz.Source(dot_data)
-    current_time = str(time.strftime("%m-%d-%H-%M", time.localtime()))
+    graph = graphviz.Source(dot_data, directory='./treeCheckpoints')
+    current_time = str(time.strftime("%d-%H-%M-%S", time.localtime()))
     graph.render(current_time)
-    with open('treeCheckpoints\\' + current_time + '.pkl', 'wb') as output:
+    with open('treeCheckpoints\\' + current_time + "-" + str(acc)[0:7] + '.pkl', 'wb') as output:
         pickle.dump(model, output)
+        print("The model file is saved to " + 'treeCheckpoints\\' + current_time + "-" + str(acc)[0:5] + '.pkl')
 
 
-def test():
+def ValidModel(model) -> float:
+    dataset = TreeTrainSeedDataset(config.valid_data)
+    result = model.predict(dataset.X)
+    total_num = len(result)
+    acc = np.sum(np.array(result) - np.array(dataset.Y) == 0) / total_num
+    print("The valid accuracy ============>", acc, "%")
+    return acc
+
+
+def TestModel():
     with open(config.model, 'rb') as input:
         model = pickle.load(input)
     dataset = TreeTestSeedDataset(config.test_data)
     result = model.predict(dataset.X)
-    result = map(lambda x : str(x), result)
-    with open("result.txt", "w") as f:
+    result = map(lambda x: str(x), result)
+    with open("decision_tree_result.txt", "w") as f:
         f.write("\n".join(result))
 
 
 if __name__ == "__main__":
     if config.test:
-        test()
+        TestModel()
     else:
-        train()
+        TrainModel()
