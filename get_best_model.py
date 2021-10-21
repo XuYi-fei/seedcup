@@ -7,10 +7,10 @@
 # Date:         2021/10/21
 # -------------------------------------------------------------------------------
 from torch.utils.data import DataLoader
-from model import *
+from res_model import *
 from colorama import Fore
 from metric import *
-from train import SeedDataset
+from res_train import SeedDataset
 
 
 def test_in_train(dataloader, model, loss_fn, device):

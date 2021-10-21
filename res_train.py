@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
-from model import *
+from res_model import *
 from colorama import Fore
 from metric import *
 import pandas as pd

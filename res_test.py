@@ -1,5 +1,5 @@
 import torch
-from model import *
+from res_model import *
 import argparse
 from torch.utils.data import Dataset, DataLoader
 import pandas as pd
