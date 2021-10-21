@@ -56,7 +56,7 @@ hyper_evol.py、train_modified.py
 
 ##### 使用方法
 
-`python train_modified --evol`
+`python train_hyper-evol --evol`
 
 &nbsp;
 
