@@ -43,14 +43,14 @@ def train(dataloader, model, loss_fn, optimizer, device, positive_weight):
         loss.backward()
         optimizer.step()
 
-        if batch % 100 == 0:
-            loss = loss.item()
-            print(f"{Fore.GREEN + '[train]===>'} loss: {loss} {'' + Fore.RESET}")
+        # if batch % 100 == 0:
+        #     loss = loss.item()
+        #     print(f"{Fore.GREEN + '[train]===>'} loss: {loss} {'' + Fore.RESET}")
 
 
 def valid(dataloader, model, loss_fn, device):
     model.eval()
-
+    model = model.to(device)
     num_dataset = len(dataloader.dataset)
     loss = 0
 
@@ -74,18 +74,27 @@ def valid(dataloader, model, loss_fn, device):
               f"{'' + Fore.RESET}")
 
 
+# For updating learning rate
+def update_lr(optimizer, lr):
+    for param_group in optimizer.param_groups:
+        param_group['lr'] = lr
+
+
 if __name__ == '__main__':
 
     torch.manual_seed(777)
-    device = torch.device('cpu')
+    device = torch.device('cuda')
 
     batch_size, in_features, out_features = 30, 28, 2
     lr, positive_weight = 1e-3, 2.33
-    epochs = 30
+    epochs = 300
 
-    model = Fake1DAttention(in_features, out_features)
+    model = ResNet(ResidualBlock, [2, 2, 2])
+    model = model.to(device)
     loss_fn = nn.CrossEntropyLoss()
-    optimizer = optim.Adagrad(model.parameters(), lr=lr)
+    loss_fn = loss_fn.to(device)
+
+    optimizer = optim.Adam(model.parameters(), lr=lr)
 
     train_dataset = SeedDataset("./data/v1/train.csv")
     train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
@@ -94,7 +103,7 @@ if __name__ == '__main__':
     valid_dataloader = DataLoader(valid_dataset, batch_size=1, shuffle=False)
 
     for t in range(epochs):
-        print(f"{Fore.GREEN + '===>'} Epoch {t + 1} {'' + Fore.RESET}\n" \
+        print(f"{Fore.GREEN + '===>'} Epoch {t + 1} {'' + Fore.RESET}\n"
               "---------------------------------------")
         train(train_dataloader, model, loss_fn, optimizer, device, positive_weight)
         valid(valid_dataloader, model, loss_fn, device)
