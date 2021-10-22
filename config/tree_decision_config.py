@@ -10,6 +10,7 @@ class TreeDecisionConfig:
         self.model = configs.model
         self.test_data = configs.test_data
         self.train_data = configs.train_data
+        self.valid_data = configs.valid_data
         # self.min_samples_split = 2,
         # self.min_samples_leaf = 1,
         # self.min_weight_fraction_leaf = 0.,
@@ -30,10 +31,11 @@ def parse_args():
                         default='gini')
     parser.add_argument("--splitter", "-s", help="splitter strategy of the tree", type=str, choices=['best', 'random'],
                         default='best')
-    parser.add_argument("--test", "-t", help="train or test", type=bool, default=True)
+    parser.add_argument("--test", "-t", help="train or test", type=bool, default=False)
     parser.add_argument("--model", help="path to saved model", type=str, default='treeCheckpoints/10-20-14-18.pkl')
-    parser.add_argument("--train-data", help="path to train data", type=str, default="./data/v1/train.csv")
-    parser.add_argument("--test-data", help="path to test data", type=str, default="./data/v1/test_a.csv")
+    parser.add_argument("--train-data", help="path to train data", type=str, default="./data/train/train.csv")
+    parser.add_argument("--test-data", help="path to test data", type=str, default="./data/test/test_info.csv")
+    parser.add_argument("--valid-data", help="path to valid data", type=str, default="./data/train/valid.csv")
     return parser.parse_args()
 
 
