@@ -92,6 +92,14 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--evol', action='store_true',
                         help="hyperparameters auto evolve")
+    parser.add_argument('--train', type=str,
+                        default="./data/unmodified/train.csv")
+    parser.add_argument('--valid', type=str,
+                        default="./data/unmodified/valid.csv")
+    parser.add_argument('--device', type=str,
+                        default='cpu')
+    parser.add_argument('--in_feature', type=int,
+                        default=28)
     # parser.add_argument('--model', help="train with last model",
     #                     type=str, default="./checkpoints/unevol/24_epoc.pt")
 
@@ -103,20 +111,20 @@ if __name__ == '__main__':
     args = parse_args()
 
     torch.manual_seed(777)
-    # device = torch.device('cpu')
-    device = torch.device('cpu')
 
-    batch_size, in_features, out_features = 30, 33, 2
+    device = torch.device(args.device)
+
+    batch_size, in_features, out_features = 30, args.in_feature, 2
     lr, positive_weight = 1e-3, 2.33
-    epochs = 50
+    epochs = 300
 
-    loss_fn = nn.CrossEntropyLoss()
+    loss_fn = (nn.CrossEntropyLoss()).to(device)
 
-    train_dataset = SeedDataset("./data/v1_p/train.csv")
+    train_dataset = SeedDataset(args.train)
     train_dataloader = DataLoader(
         train_dataset, batch_size=batch_size, shuffle=True)
 
-    valid_dataset = SeedDataset("./data/v1_p/valid.csv")
+    valid_dataset = SeedDataset(args.valid)
     valid_dataloader = DataLoader(valid_dataset, batch_size=1, shuffle=False)
 
     if(os.path.isdir(f"./checkpoints") == 0):
@@ -124,6 +132,9 @@ if __name__ == '__main__':
 
     # Direct train
     if args.evol == False:
+        print(
+            f"\nepochs: {epochs}\ndevice: {device}\nin_feature: {args.in_feature}\ntrain_set: {args.train}\nvalid_set: {args.valid}\n")
+
         if(os.path.isdir("./checkpoints/unevol") == 0):
             os.mkdir("./checkpoints/unevol")
 

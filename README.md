@@ -36,6 +36,12 @@
 
 # 数据集说明
 
+### 数据分析
+
+所有35维数据的相关性分析：
+
+`/data/original/pearmon`、`/data/original/spearman` 分别保存了皮尔曼系数和斯皮尔曼系数
+
 ### 改动内容
 
 从user_track中提取出总登录次数 total_day、工作日登录比例 work_day_rate、周末登录比例 weekend_day_rate、平均第一次登陆时间 avg_early_hour、平均最后一次登录时间avg_last_hour，现在完整数据见 data\original\all_info.csv
@@ -60,11 +66,13 @@
 
 ### 相关脚本
 
-hyper_evol.py、train_hyper-evol.py
+hyper_evol.py、train_hyper-evol.py（baseline）、res_hyper-evol.py（ResNet)
 
 ### 使用方法
 
 `python train_hyper-evol --evol`
+
+`python res_train_hyper-evol --evol`
 
 &nbsp;
 
