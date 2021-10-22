@@ -96,6 +96,8 @@ def parse_args():
                         default="./data/unmodified/train.csv")
     parser.add_argument('--valid', type=str,
                         default="./data/unmodified/valid.csv")
+    parser.add_argument('--device', type=str,
+                        default='cpu')
     parser.add_argument('--in_feature', type=int,
                         default=28)
     # parser.add_argument('--model', help="train with last model",
@@ -110,7 +112,7 @@ if __name__ == '__main__':
 
     torch.manual_seed(777)
 
-    device = torch.device('cpu')
+    device = torch.device(args.device)
 
     batch_size, in_features, out_features = 30, args.in_feature, 2
     lr, positive_weight = 1e-3, 2.33
@@ -128,11 +130,11 @@ if __name__ == '__main__':
     if(os.path.isdir(f"./checkpoints") == 0):
         os.mkdir(f"./checkpoints")
 
-    print(
-        f"\nepochs: {epochs}\ndevice: {device}\nin_feature: {args.in_feature}\ntrain_set: {args.train}\nvalid_set: {args.valid}\n")
-
     # Direct train
     if args.evol == False:
+        print(
+            f"\nepochs: {epochs}\ndevice: {device}\nin_feature: {args.in_feature}\ntrain_set: {args.train}\nvalid_set: {args.valid}\n")
+
         if(os.path.isdir("./checkpoints/unevol") == 0):
             os.mkdir("./checkpoints/unevol")
 

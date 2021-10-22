@@ -66,11 +66,13 @@
 
 ### 相关脚本
 
-hyper_evol.py、train_hyper-evol.py
+hyper_evol.py、train_hyper-evol.py（baseline）、res_hyper-evol.py（ResNet)
 
 ### 使用方法
 
 `python train_hyper-evol --evol`
+
+`python res_train_hyper-evol --evol`
 
 &nbsp;
 
