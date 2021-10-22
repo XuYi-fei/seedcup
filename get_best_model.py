@@ -53,7 +53,7 @@ if __name__ == '__main__':
     valid_dataset = SeedDataset("./data/v1/train.csv")
     valid_dataloader = DataLoader(valid_dataset, batch_size=100, shuffle=False)
 
-    for t in range(200, epochs):
+    for t in range(240, epochs):
         path = "./checkpoints/"+str(t)+"_epoc.pt"
         print(path)
         model.load_state_dict(torch.load(path))
