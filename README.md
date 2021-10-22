@@ -1,7 +1,15 @@
 # baseline说明
-1. 安装python（推荐miniconda），pytorch（参考官网教程）
-2. 训练，运行train.py
-3. 推理，运行test.py，生成提交文件（output_a.txt）
+### 训练 train_hyper-evol.py
+
+——train 训练集路径
+
+——valid 验证集路径
+
+——in_feature 训练集维度
+
+——evol 自动超参数优化
+
+### 测试 test.py
 
 &nbsp;
 
@@ -46,15 +54,15 @@
 
 # 超参数自动优化
 
-##### 说明
+### 说明
 
 用遗传算法在训练30轮后微调参数，进行下一个30轮的训练，总共演进100次（可选），获得100组超参数（目前有：lr、positive_weight），取最优者来训练网络
 
-##### 相关脚本
+### 相关脚本
 
-hyper_evol.py、train_modified.py
+hyper_evol.py、train_hyper-evol.py
 
-##### 使用方法
+### 使用方法
 
 `python train_hyper-evol --evol`
 
@@ -64,6 +72,24 @@ hyper_evol.py、train_modified.py
 
 用于记录已提交文件测试效果及对应网络参数文件等
 
-`/baseline` 下为原始神经网络的测试结果，文件命名格式：`数据维度_训练轮数_测试分数`
+`/Fake1DAttention` 下为只使用全连接，文件命名格式：`数据维度_训练轮数_测试分数`
 
-`/baseline+残差` 下为加入残差部分，文件命名格式：`数据维度_训练轮数_测试分数`
+`/ResNet` 下为使用残差网络，文件命名格式：`数据维度_训练轮数_测试分数`
+
+&nbsp;
+
+# TODO
+
+### lrk
+
+归档本地文件，添加到main
+
+数据预处理：transforms、删除部分维度
+
+尝试不同：loss_fn、optimizer
+
+超参数优化加到ResNet网络中，试试效果
+
+### xyf
+
+### lc
