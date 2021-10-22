@@ -9,17 +9,23 @@ import pandas as pd
 
 import os
 import argparse
+import numpy as np
 from hyp_evol import *
 
 
 class SeedDataset(Dataset):
 
-    def __init__(self, annotations_file):
+    def __init__(self, annotations_file, normalization):
         super().__init__()
         self.data: pd.DataFrame = pd.read_csv(annotations_file)
         self.data: pd.DataFrame = self.data[self.data['label'].notna()]
+
         self.Y = self.data['label']
         self.X = self.data.drop(columns=['id', 'label']).fillna(value=-1)
+
+        # 按列归一化 ———— max-min
+        if normalization:
+            self.X = (self.X-self.X.min())/(self.X.max()-self.X.min())
 
     def __len__(self):
         return len(self.data)
@@ -98,6 +104,8 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--evol', action='store_true',
                         help="hyperparameters auto evolve")
+    parser.add_argument('--norm', action='store_true',
+                        help="normalize the data set")
     parser.add_argument('--train', type=str,
                         default="./data/unmodified/train.csv")
     parser.add_argument('--valid', type=str,
@@ -125,11 +133,11 @@ if __name__ == '__main__':
 
     loss_fn = nn.CrossEntropyLoss().to(device)
 
-    train_dataset = SeedDataset(args.train)
+    train_dataset = SeedDataset(args.train, args.norm)
     train_dataloader = DataLoader(
         train_dataset, batch_size=batch_size, shuffle=True)
 
-    valid_dataset = SeedDataset(args.valid)
+    valid_dataset = SeedDataset(args.valid, args.norm)
     valid_dataloader = DataLoader(valid_dataset, batch_size=1, shuffle=False)
 
     if(os.path.isdir("./checkpoints") == 0):
@@ -140,7 +148,7 @@ if __name__ == '__main__':
     # Direct train
     if args.evol == False:
         print(
-            f"\nepochs: {epochs}\ndevice: {device}\nin_feature: {args.in_feature}\ntrain_set: {args.train}\nvalid_set: {args.valid}\n")
+            f"\nepochs: {epochs}\ndevice: {device}\nin_feature: {args.in_feature}\ndata_normalize: {args.norm}\ntrain_set: {args.train}\nvalid_set: {args.valid}\n")
 
         if(os.path.isdir("./checkpoints/ResNet/unevol") == 0):
             os.mkdir("./checkpoints/ResNet/unevol")
