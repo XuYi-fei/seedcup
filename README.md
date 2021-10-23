@@ -25,8 +25,6 @@ res_hyper-evol.py（ResNet)、res_model、hyper_evol.py、metric.py、res_test.p
 
 `--evol` 	超参数自动优化
 
-`--norm` 	数据集归一化
-
 `--device ` 	可选cpu、cuda
 
 `--train、--valid、--in_feature` 	数据集路径和数据维度
@@ -66,15 +64,15 @@ res_hyper-evol.py（ResNet)、res_model、hyper_evol.py、metric.py、res_test.p
 
 从user_track中提取出总登录次数 total_day、工作日登录比例 work_day_rate、周末登录比例 weekend_day_rate、平均第一次登陆时间 avg_early_hour、平均最后一次登录时间avg_last_hour，现在完整数据见 data\original\all_info.csv
 
-### 使用说明
+### 目录结构
 
-当前数据的目录结构：
+![image-20211023113114372](https://gitee.com/Lrk612/md_picture2/raw/master/img/image-20211023113114372.png)
 
-<img src="C:\Users\18426\AppData\Roaming\Typora\typora-user-images\image-20211023013717843.png" alt="image-20211023013717843" style="zoom: 67%;" />
+`/33_dimension` 	加入了user_track里的5个维度
 
-1. train下train为新训练集、valid为新验证集，test下为新测试集；除去 id 和 label ，每条数据有33个维度
+`/normalze`	归一化后的28维数据集
 
-2. modified下为28维baseline的数据集
+`/unmodified`	baseline的数据集
 
 &nbsp;
 

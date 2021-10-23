@@ -78,7 +78,35 @@ def generate_test() -> None:
     result.to_csv("data/test/test_info.csv", sep=',', index=False, header=True)
 
 
+def normalize() -> None:
+    train = pd.read_csv("unmodified/train.csv")
+    valid = pd.read_csv("unmodified/valid.csv")
+    test = pd.read_csv("unmodified/test_a.csv")
+
+    train_id = train['id']
+    train_label = train['label']
+    valid_id = valid["id"]
+    valid_label = valid["label"]
+    test_id = test["id"]
+
+    # 按列归一化 ———— max-min
+    train = (train-train.min())/(train.max()-train.min())
+    valid = (valid-valid.min())/(valid.max()-valid.min())
+    test = (test-test.min())/(test.max()-test.min())
+
+    train['id'] = train_id
+    train['label'] = train_label
+    valid['id'] = valid_id
+    valid['label'] = valid_label
+    test['id'] = test_id
+
+    train.to_csv("normalized/train.csv")
+    valid.to_csv("normalized/valid.csv")
+    test.to_csv("normalized/test.csv")
+
+
 if __name__ == "__main__":
     # add_track()
     # delete_columns()
-    generate_test()
+    # generate_test()
+    # normalize()
