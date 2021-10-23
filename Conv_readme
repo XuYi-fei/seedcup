@@ -1,0 +1,5 @@
+conv_model.py:卷积模型
+conv_train.py:训练
+conv_train.py:测试
+output_f.txt:第131轮训练结果
+注：采用33维输入，共训练150个epoch，目前Fscore仍不到0.4。
