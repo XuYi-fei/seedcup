@@ -98,8 +98,12 @@ LCNet_train.py、LCNet_model.py、LCNet_test.py
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;----xxxxx_xxx_0.efgh.txt
 
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;----xxxxx_xxx_0.efgh.pt
+  
 - 注意不要更改`weighted`文件夹名
+
 - 注意输出的txt结尾是四位小数的格式
+
+&nbsp;
 
 # 数据集说明
 
