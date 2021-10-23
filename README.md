@@ -94,13 +94,17 @@ LCNet_train.py、LCNet_model.py、LCNet_test.py
 
 ### 目录结构
 
-![image-20211023113114372](https://gitee.com/Lrk612/md_picture2/raw/master/img/image-20211023113114372.png)
+<img src="C:\Users\lrk\AppData\Roaming\Typora\typora-user-images\image-20211023160734280.png" alt="image-20211023160734280" style="zoom:67%;" />
 
-`/33_dimension` 	加入了user_track里的5个维度
+`33_dimension/` 	加入了user_track里的5个维度
 
-`/normalze`	归一化后的28维数据集
+`28_normalze/`	归一化后的28维数据集
 
-`/unmodified`	baseline的数据集
+`33_normalze/`	归一化后的33维数据集
+
+`original/`	原始数据
+
+`unmodified/`	baseline的数据集
 
 &nbsp;
 

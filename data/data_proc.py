@@ -79,9 +79,9 @@ def generate_test() -> None:
 
 
 def normalize() -> None:
-    train = pd.read_csv("unmodified/train.csv")
-    valid = pd.read_csv("unmodified/valid.csv")
-    test = pd.read_csv("unmodified/test_a.csv")
+    train = pd.read_csv("33_dimension/train.csv")
+    valid = pd.read_csv("33_dimension/valid.csv")
+    test = pd.read_csv("33_dimension/test.csv")
 
     train_id = train['id']
     train_label = train['label']
@@ -100,13 +100,13 @@ def normalize() -> None:
     valid['label'] = valid_label
     test['id'] = test_id
 
-    train.to_csv("normalized/train.csv")
-    valid.to_csv("normalized/valid.csv")
-    test.to_csv("normalized/test.csv")
+    train.to_csv("33_normalized/train.csv")
+    valid.to_csv("33_normalized/valid.csv")
+    test.to_csv("33_normalized/test.csv")
 
 
 if __name__ == "__main__":
     # add_track()
     # delete_columns()
     # generate_test()
-    # normalize()
+    normalize()
