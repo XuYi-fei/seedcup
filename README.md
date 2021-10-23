@@ -1,13 +1,17 @@
 # 模型一：baseline
 ### 相关脚本
 
-train_hyper-evol.py、model.py、hyper_evol.py、metric.py、test.py
+baseline_train.py、baseline_model.py、baseline_test.py
 
 ### 参数
 
 `--evol` 	超参数自动优化
 
 `--train、--valid、--in_feature` 	数据集路径和数据维度
+
+### 目前效果
+
+28维数据集（未归一化）——24轮——0.7065
 
 &nbsp;
 
@@ -19,7 +23,7 @@ train_hyper-evol.py、model.py、hyper_evol.py、metric.py、test.py
 
 ### 相关脚本
 
-res_hyper-evol.py（ResNet)、res_model、hyper_evol.py、metric.py、res_test.py
+res_hyper-evol.py、res_model、res_test.py
 
 ### 参数
 
@@ -28,6 +32,30 @@ res_hyper-evol.py（ResNet)、res_model、hyper_evol.py、metric.py、res_test.p
 `--device ` 	可选cpu、cuda
 
 `--train、--valid、--in_feature` 	数据集路径和数据维度
+
+### 目前效果
+
+28维数据集（未归一化）——273轮——0.8196
+
+&nbsp;
+
+# 模型三：LCNet
+
+### 说明
+
+### 相关脚本
+
+LCNet_train.py、LCNet_model.py、LCNet_test.py
+
+### 参数
+
+`--device ` 	可选cpu、cuda
+
+`--train、--valid、--in_feature` 	数据集路径和数据维度
+
+### 目前效果
+
+33维数据集（未归一化）——131轮——0.8226
 
 &nbsp;
 
@@ -80,9 +108,11 @@ res_hyper-evol.py（ResNet)、res_model、hyper_evol.py、metric.py、res_test.p
 
 用于记录已提交文件测试效果及对应网络参数文件等
 
-`/Fake1DAttention` 下为只使用全连接，文件命名格式：`数据维度_训练轮数_测试分数`
+`/Fake1DAttention` 下为只使用全连接，文件命名格式：`数据维度(是否归一化)_训练轮数_测试分数`
 
-`/ResNet` 下为使用残差网络，文件命名格式：`数据维度_训练轮数_测试分数`
+`/ResNet` 下为使用残差网络，文件命名格式：`数据维度(是否归一化)_训练轮数_测试分数`
+
+`/LCNet` 下为使用LCNet（conv），文件命名格式：`数据维度(是否归一化)_训练轮数_测试分数`
 
 &nbsp;
 
