@@ -1,15 +1,42 @@
-# baseline说明
-1. 安装python（推荐miniconda），pytorch（参考官网教程）
-2. 训练，运行train.py
-3. 推理，运行test.py，生成提交文件（output_a.txt）
----
+# 模型一：baseline
+### 相关脚本
+
+train_hyper-evol.py、model.py、hyper_evol.py、metric.py、test.py
+
+### 参数
+
+`--evol` 	超参数自动优化
+
+`--train、--valid、--in_feature` 	数据集路径和数据维度
+
+&nbsp;
+
+# 模型二：ResNet
+
+### 说明
+
+用ResNet网络预测
+
+### 相关脚本
+
+res_hyper-evol.py（ResNet)、res_model、hyper_evol.py、metric.py、res_test.py
+
+### 参数
+
+`--evol` 	超参数自动优化
+
+`--device ` 	可选cpu、cuda
+
+`--train、--valid、--in_feature` 	数据集路径和数据维度
+
+&nbsp;
 
 # 决策树说明
 ### 代码说明
 
-- ``decision_tree.py``: 运行决策树train和test的文件;train中会自动运行valid模块
+- ``decision_tree.py``: 运行决策树train和test的文件
 - ``config/tree_decistion_config.py``: 决策树的相关配置
-- train后会生成一个pdf和一个模型文件，pdf是决策树的可视化pdf,文件保存在treeCheckpoints下
+- train后会生成一个pdf和一个模型文件，pdf是决策树的可视化pdf;模型文件保存在treeCheckpoints下
 - test时需要指定具体的模型文件
 ### 运行说明
 
@@ -22,94 +49,53 @@
     ```bash
     python decision_tree.py --test True --model treeCheckpoints/10-20-14-18.pkl
     ```
----
-# 数据集说明
-# 2021.10.20
 
-## 改动了数据集
+&nbsp;
+
+# 数据集说明
+
+### 数据分析
+
+所有35维数据的相关性分析：
+
+`/data/original/pearmon`、`/data/original/spearman` 分别保存了皮尔曼系数和斯皮尔曼系数
+
+### 改动内容
 
 从user_track中提取出总登录次数 total_day、工作日登录比例 work_day_rate、周末登录比例 weekend_day_rate、平均第一次登陆时间 avg_early_hour、平均最后一次登录时间avg_last_hour，现在完整数据见 data\original\all_info.csv
 
+### 目录结构
 
+![image-20211023113114372](https://gitee.com/Lrk612/md_picture2/raw/master/img/image-20211023113114372.png)
 
-测试了昨天删除 `认证年龄、导流渠道`后40轮训练的效果，0.6336，太拉了
+`/33_dimension` 	加入了user_track里的5个维度
 
+`/normalze`	归一化后的28维数据集
 
-
-当前数据的目录结构：
-
-<img src="https://gitee.com/lrk612/md_picture/raw/master/img/20211020194147.png" alt="image-20211020194140300" style="zoom:50%;" />
-
-其中train下train为训练集、valid为验证集，test下为测试集
-
-除去 id 和 label ，每条数据有33个维度
+`/unmodified`	baseline的数据集
 
 &nbsp;
 
-&nbsp;
+# History目录
+
+用于记录已提交文件测试效果及对应网络参数文件等
+
+`/Fake1DAttention` 下为只使用全连接，文件命名格式：`数据维度_训练轮数_测试分数`
+
+`/ResNet` 下为使用残差网络，文件命名格式：`数据维度_训练轮数_测试分数`
 
 &nbsp;
 
-# 2021.10.19
+# TODO
 
-## 增加了超参数自动优化
+### lrk
 
-##### 说明
+数据预处理：transforms（已完成归一化）、删除部分维度（已完成相关性分析）
 
-用遗传算法在训练30轮后微调参数，进行下一个30轮的训练，总共演进100次，获得100组超参数（目前有：lr、positive_weight），取最优者来训练网络
+尝试不同：loss_fn、optimizer
 
-##### 相关脚本
+超参数优化加到ResNet网络中（已完成），试试效果
 
-hyper_evol.py、train_modified.py
+### xyf
 
-##### 使用方法
-
-`python train_modified --evol`
-
-&nbsp;
-
-## 改动了数据集
-
-##### 改动及效果
-
-处理后的数据在 /data/v1_p、/data/v2_p目录下，历史记录：
-
-1. 删除 `认证年龄、导流渠道、历史加好友数量、历史浏览好友数量、历史私聊好友数量` 
-
-   效果：训练40轮，out.txt全是1
-
-2. 删除 `认证年龄、导流渠道`
-
-   效果：看着比 1. 好，明天试一试
-
-##### 相关脚本
-
-data_proc.py
-
-&nbsp;
-
-
-
-## TODO
-
-##### 指标分析
-
-对单个指标做方差（密集度）分析
-
-对每个指标与 label 关联性做分析
-
-指标间聚类分析、相关性分析
-
-##### 训练集、数据集处理
-
-user_track数据补充到总表
-
-重选数据集，把 label=1 的都包含进来
-
-空缺数据填充：平均值、插值、其他
-
-##### 训练改进
-
-loss_fn多采用几种
-
-optimizer多采用几种
+### lc
