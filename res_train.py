@@ -185,7 +185,7 @@ if __name__ == '__main__':
                       "---------------------------------------")
                 train(train_dataloader, model, loss_fn,
                       optimizer, device, positive_weight)
-                valid(valid_dataloader, model, loss_fn, device)
+                metric = valid(valid_dataloader, model, loss_fn, device)
                 torch.save(model.state_dict(),
                            f"./checkpoints/ResNet/evol/generate_{g}/{t}_epoc.pt")
 
