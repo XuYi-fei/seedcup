@@ -1,5 +1,5 @@
 import torch
-from res_model import *
+from model import *
 import argparse
 from torch.utils.data import Dataset, DataLoader
 import pandas as pd
@@ -8,11 +8,11 @@ import pandas as pd
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--model', help="path to model",
-                        type=str, default="./checkpoints/273_epoc.pt")
+                        type=str, default="./checkpoints/unevol/24_epoc.pt")
     parser.add_argument('-i', '--input', help="path to input files",
-                        type=str, default="./data/v1/test_a.csv")
+                        type=str, default="./data/unmodified/test_a.csv")
     parser.add_argument(
-        '-o', '--output', help="path to output files", type=str, default="output_b.txt")
+        '-o', '--output', help="path to output files", type=str, default="output_a.txt")
     parser.add_argument('--input-features',
                         help="input dimension for model", type=int, default=28)
     parser.add_argument('--output-features',
@@ -37,10 +37,8 @@ class SeedDataset(Dataset):
 
 def main():
     args = parse_args()
-    # model = Fake1DAttention(args.input_features, args.output_features)
-    model = ResNet(ResidualBlock, [2, 2, 2], args.input_features)
+    model = Fake1DAttention(args.input_features, args.output_features)
     model.load_state_dict(torch.load(args.model))
-
     model.eval()
 
     test_dataset = SeedDataset(args.input)
