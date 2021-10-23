@@ -80,6 +80,27 @@ LCNet_train.py、LCNet_model.py、LCNet_test.py
 
 &nbsp;
 
+# 模型结果的加权
+### 脚本说明
+
+- 此脚本要求文件目录如下:
+  
+  ----history
+  
+  &nbsp;&nbsp;&nbsp;&nbsp;----model_name1
+
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;----xxxxx_xxx_0.abcd.txt
+
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;----xxxxx_xxx_0.abcd.pt
+
+  &nbsp;&nbsp;&nbsp;&nbsp;----model_name2
+
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;----xxxxx_xxx_0.efgh.txt
+
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;----xxxxx_xxx_0.efgh.pt
+- 注意不要更改`weighted`文件夹名
+- 注意输出的txt结尾是四位小数的格式
+
 # 数据集说明
 
 ### 数据分析
