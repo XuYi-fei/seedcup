@@ -1,15 +1,33 @@
-# baseline说明
-### 训练 train_hyper-evol.py
+# 模型一：baseline
+### 相关脚本
 
-——train 训练集路径
+train_hyper-evol.py、model.py、hyper_evol.py、metric.py、test.py
 
-——valid 验证集路径
+### 参数
 
-——in_feature 训练集维度
+`--evol` 	超参数自动优化
 
-——evol 自动超参数优化
+`--train、--valid、--in_feature` 	数据集路径和数据维度
 
-### 测试 test.py
+&nbsp;
+
+# 模型二：ResNet
+
+### 说明
+
+用ResNet网络预测
+
+### 相关脚本
+
+res_hyper-evol.py（ResNet)、res_model、hyper_evol.py、metric.py、res_test.py
+
+### 参数
+
+`--evol` 	超参数自动优化
+
+`--device ` 	可选cpu、cuda
+
+`--train、--valid、--in_feature` 	数据集路径和数据维度
 
 &nbsp;
 
@@ -46,33 +64,15 @@
 
 从user_track中提取出总登录次数 total_day、工作日登录比例 work_day_rate、周末登录比例 weekend_day_rate、平均第一次登陆时间 avg_early_hour、平均最后一次登录时间avg_last_hour，现在完整数据见 data\original\all_info.csv
 
-### 使用说明
+### 目录结构
 
-当前数据的目录结构：
+![image-20211023113114372](https://gitee.com/Lrk612/md_picture2/raw/master/img/image-20211023113114372.png)
 
-<img src="https://gitee.com/lrk612/md_picture/raw/master/img/20211021173218.png" alt="image-20211020194140300" style="zoom:50%;" />
+`/33_dimension` 	加入了user_track里的5个维度
 
-其中train下train为训练集、valid为验证集，test下为测试集
+`/normalze`	归一化后的28维数据集
 
-除去 id 和 label ，每条数据有33个维度
-
-&nbsp;
-
-# 超参数自动优化
-
-### 说明
-
-用遗传算法在训练30轮后微调参数，进行下一个30轮的训练，总共演进100次（可选），获得100组超参数（目前有：lr、positive_weight），取最优者来训练网络
-
-### 相关脚本
-
-hyper_evol.py、train_hyper-evol.py（baseline）、res_hyper-evol.py（ResNet)
-
-### 使用方法
-
-`python train_hyper-evol --evol`
-
-`python res_train_hyper-evol --evol`
+`/unmodified`	baseline的数据集
 
 &nbsp;
 
@@ -90,13 +90,11 @@ hyper_evol.py、train_hyper-evol.py（baseline）、res_hyper-evol.py（ResNet)
 
 ### lrk
 
-归档本地文件，添加到main
-
-数据预处理：transforms、删除部分维度
+数据预处理：transforms（已完成归一化）、删除部分维度（已完成相关性分析）
 
 尝试不同：loss_fn、optimizer
 
-超参数优化加到ResNet网络中，试试效果
+超参数优化加到ResNet网络中（已完成），试试效果
 
 ### xyf
 

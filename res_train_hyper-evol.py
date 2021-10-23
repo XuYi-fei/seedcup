@@ -9,6 +9,7 @@ import pandas as pd
 
 import os
 import argparse
+import numpy as np
 from hyp_evol import *
 
 
@@ -18,6 +19,7 @@ class SeedDataset(Dataset):
         super().__init__()
         self.data: pd.DataFrame = pd.read_csv(annotations_file)
         self.data: pd.DataFrame = self.data[self.data['label'].notna()]
+
         self.Y = self.data['label']
         self.X = self.data.drop(columns=['id', 'label']).fillna(value=-1)
 
@@ -140,7 +142,7 @@ if __name__ == '__main__':
     # Direct train
     if args.evol == False:
         print(
-            f"\nepochs: {epochs}\ndevice: {device}\nin_feature: {args.in_feature}\ntrain_set: {args.train}\nvalid_set: {args.valid}\n")
+            f"\nepochs: {epochs}\ndevice: {device}\nin_feature: {args.in_feature}\ndata_normalize: {args.norm}\ntrain_set: {args.train}\nvalid_set: {args.valid}\n")
 
         if(os.path.isdir("./checkpoints/ResNet/unevol") == 0):
             os.mkdir("./checkpoints/ResNet/unevol")
