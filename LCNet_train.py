@@ -93,9 +93,9 @@ def update_lr(optimizer, lr):
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--train', type=str,
-                        default="./data/train/train.csv")
+                        default="./data/33_dimension/train.csv")
     parser.add_argument('--valid', type=str,
-                        default="./data/train/valid.csv")
+                        default="./data/33_dimension/valid.csv")
     parser.add_argument('--in_feature', type=int,
                         default=33)
     parser.add_argument('--device', type=str,
@@ -111,7 +111,7 @@ if __name__ == '__main__':
     torch.manual_seed(777)
     device = torch.device(args.device)
 
-    batch_size, in_features, out_features = 30, args.in_features, 2
+    batch_size, in_features, out_features = 30, args.in_feature, 2
     # 原数据：1e-3 2.33
     lr, positive_weight = 1e-3, 1.33
     epochs = 150
@@ -130,6 +130,8 @@ if __name__ == '__main__':
     valid_dataset = SeedDataset(args.valid)
     valid_dataloader = DataLoader(valid_dataset, batch_size=1, shuffle=False)
 
+    if(os.path.isdir("./checkpoints") == 0):
+        os.mkdir("./checkpoints")
     if(os.path.isdir("./checkpoints/LCNet") == 0):
         os.mkdir("./checkpoints/LCNet")
 

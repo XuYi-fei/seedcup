@@ -49,8 +49,6 @@ LCNet_train.py、LCNet_model.py、LCNet_test.py
 
 ### 参数
 
-`--evol` 	超参数自动优化
-
 `--device ` 	可选cpu、cuda
 
 `--train、--valid、--in_feature` 	数据集路径和数据维度
