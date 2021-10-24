@@ -4,6 +4,7 @@ import os
 def vote(directory="../history"):
     models = os.listdir(directory)
     models = list(filter(lambda x: x != 'weighted', models))
+    print(models)
     # 365 is the number of the test sample
     scores = [0] * 365
     weights = []
@@ -12,6 +13,7 @@ def vote(directory="../history"):
         highest_result = sorted(os.listdir(os.path.join(directory, model)),
                                 key=lambda x: x.split("_")[-1].split(".")[-2])
         highest_result = list(filter(lambda x: x.endswith(".txt"), highest_result))[-1]
+        print(highest_result)
         # open the file
         with open(os.path.join(directory, model, highest_result), "r") as f:
             # get the weight from the file name
