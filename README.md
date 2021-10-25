@@ -131,6 +131,11 @@ LCNet_train.py、LCNet_model.py、LCNet_test.py
 
 `unmodified/`	baseline的数据集
 
+### 随机切分数据
+
+`utils/random_data.py` 用于随机切分数据，如果要在模型训练测试时使用,可以直接调用其中的`generate_new_data()`函数,生成的新数据
+会在`data/random_data/`下
+
 &nbsp;
 
 # History目录
