@@ -2,8 +2,9 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
-from model import *
 from colorama import Fore
+
+from baseline_model import Fake1DAttention
 from metric import *
 import pandas as pd
 

@@ -1,8 +1,9 @@
 import torch
-from model import *
 import argparse
 from torch.utils.data import Dataset, DataLoader
 import pandas as pd
+
+from baseline_model import Fake1DAttention
 
 
 def parse_args():

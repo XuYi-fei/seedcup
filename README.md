@@ -81,8 +81,8 @@ LCNet_train.py、LCNet_model.py、LCNet_test.py
 &nbsp;
 
 # 模型结果的加权
-### 脚本说明
-
+### 1. `utils/vote.py`
+- 脚本`utils/vote.py`
 - 此脚本要求文件目录如下:
   
   ----history
@@ -104,6 +104,14 @@ LCNet_train.py、LCNet_model.py、LCNet_test.py
 - 注意输出的txt结尾是四位小数的格式
 
 &nbsp;
+
+### 2. `test.py`
+
+**直接对三种模型进行加权测试**
+- 注意目前没有baseline的模型(主要是没有训好的baseline提交的分数)，如果有了之后，
+要和其他文件的命名方式一样并且放在history/Fake1DAttention下
+- 模型的各种参数设置在`config/test_config.py`中，可自己查阅（目前baseline模型的config不正确，所以不要直接跑！！！！）
+- 每次运行后，各个模型也会输出一个结果（在history下对应目录，反复运行会覆盖），总加权后的结果也会输出（也就是说目前是4个）
 
 # 数据集说明
 
