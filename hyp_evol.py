@@ -59,5 +59,5 @@ def Update_gene(hyp, metric, txt_path='evolve.txt') -> None:
 def fitness(x):
     # Model fitness as a weighted combination of metrics
     # weights for [acc, precision, recall, Fscore]
-    w = [0.15, 0.15, 0.05, 0.65]
+    w = [0, 0.15, 0.15, 0.7]
     return (x[:, :4] * w).sum(1)

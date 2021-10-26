@@ -30,16 +30,21 @@ class ResidualBlock(nn.Module):
         return out
 
 # ResNet
+
+
 class ResNet(nn.Module):
-    def __init__(self, block, layers, num_classes=2):
+    def __init__(self, block, layers, in_channels, num_classes=2):
         super(ResNet, self).__init__()
-        self.in_channels = 28
+        self.in_channels = in_channels
         self.conv = nn.Linear(self.in_channels, self.in_channels)
         self.bn = nn.BatchNorm1d(self.in_channels)
         self.relu = nn.ReLU(inplace=True)
-        self.layer1 = self.make_layer(block, self.in_channels, 2*self.in_channels, layers[0])
-        self.layer2 = self.make_layer(block, 2*self.in_channels, 4*self.in_channels, layers[1])
-        self.layer3 = self.make_layer(block, 4*self.in_channels, self.in_channels, layers[2])
+        self.layer1 = self.make_layer(
+            block, self.in_channels, 2*self.in_channels, layers[0])
+        self.layer2 = self.make_layer(
+            block, 2*self.in_channels, 4*self.in_channels, layers[1])
+        self.layer3 = self.make_layer(
+            block, 4*self.in_channels, self.in_channels, layers[2])
         self.fc = nn.Linear(self.in_channels, num_classes)
         self.last = nn.Softmax(dim=1)
 

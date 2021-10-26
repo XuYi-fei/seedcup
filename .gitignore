@@ -4,17 +4,19 @@
 
 # idea config
 *.xml
-*.json
+*.iml
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
-
+.idea/
 # C extensions
 *.so
 
 # Distribution / packaging
 .Python
+.pytest_cache/
 checkpoints/
 build/
 develop-eggs/
