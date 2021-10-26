@@ -1,13 +1,17 @@
 # 模型一：baseline
 ### 相关脚本
 
-train_hyper-evol.py、model.py、hyper_evol.py、metric.py、test.py
+baseline_train.py、baseline_model.py、baseline_test.py
 
 ### 参数
 
 `--evol` 	超参数自动优化
 
 `--train、--valid、--in_feature` 	数据集路径和数据维度
+
+### 目前效果
+
+28维数据集（未归一化）——24轮——0.7065
 
 &nbsp;
 
@@ -19,7 +23,7 @@ train_hyper-evol.py、model.py、hyper_evol.py、metric.py、test.py
 
 ### 相关脚本
 
-res_hyper-evol.py（ResNet)、res_model、hyper_evol.py、metric.py、res_test.py
+res_hyper-evol.py、res_model、res_test.py
 
 ### 参数
 
@@ -28,6 +32,30 @@ res_hyper-evol.py（ResNet)、res_model、hyper_evol.py、metric.py、res_test.p
 `--device ` 	可选cpu、cuda
 
 `--train、--valid、--in_feature` 	数据集路径和数据维度
+
+### 目前效果
+
+28维数据集（未归一化）——273轮——0.8196
+
+&nbsp;
+
+# 模型三：LCNet
+
+### 说明
+
+### 相关脚本
+
+LCNet_train.py、LCNet_model.py、LCNet_test.py
+
+### 参数
+
+`--device ` 	可选cpu、cuda
+
+`--train、--valid、--in_feature` 	数据集路径和数据维度
+
+### 目前效果
+
+33维数据集（未归一化）——131轮——0.8226
 
 &nbsp;
 
@@ -52,6 +80,31 @@ res_hyper-evol.py（ResNet)、res_model、hyper_evol.py、metric.py、res_test.p
 
 &nbsp;
 
+# 模型结果的加权
+### 脚本说明
+
+- 此脚本要求文件目录如下:
+  
+  ----history
+  
+  &nbsp;&nbsp;&nbsp;&nbsp;----model_name1
+
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;----xxxxx_xxx_0.abcd.txt
+
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;----xxxxx_xxx_0.abcd.pt
+
+  &nbsp;&nbsp;&nbsp;&nbsp;----model_name2
+
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;----xxxxx_xxx_0.efgh.txt
+
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;----xxxxx_xxx_0.efgh.pt
+  
+- 注意不要更改`weighted`文件夹名
+
+- 注意输出的txt结尾是四位小数的格式
+
+&nbsp;
+
 # 数据集说明
 
 ### 数据分析
@@ -66,13 +119,22 @@ res_hyper-evol.py（ResNet)、res_model、hyper_evol.py、metric.py、res_test.p
 
 ### 目录结构
 
-![image-20211023113114372](https://gitee.com/Lrk612/md_picture2/raw/master/img/image-20211023113114372.png)
+<img src="C:\Users\lrk\AppData\Roaming\Typora\typora-user-images\image-20211023160734280.png" alt="image-20211023160734280" style="zoom:67%;" />
 
-`/33_dimension` 	加入了user_track里的5个维度
+`33_dimension/` 	加入了user_track里的5个维度
 
-`/normalze`	归一化后的28维数据集
+`28_normalze/`	归一化后的28维数据集
 
-`/unmodified`	baseline的数据集
+`33_normalze/`	归一化后的33维数据集
+
+`original/`	原始数据
+
+`unmodified/`	baseline的数据集
+
+### 随机切分数据
+
+`utils/random_data.py` 用于随机切分数据，如果要在模型训练测试时使用,可以直接调用其中的`generate_new_data()`函数,生成的新数据
+会在`data/random_data/`下
 
 &nbsp;
 
@@ -80,9 +142,11 @@ res_hyper-evol.py（ResNet)、res_model、hyper_evol.py、metric.py、res_test.p
 
 用于记录已提交文件测试效果及对应网络参数文件等
 
-`/Fake1DAttention` 下为只使用全连接，文件命名格式：`数据维度_训练轮数_测试分数`
+`/Fake1DAttention` 下为只使用全连接，文件命名格式：`数据维度(是否归一化)_训练轮数_测试分数`
 
-`/ResNet` 下为使用残差网络，文件命名格式：`数据维度_训练轮数_测试分数`
+`/ResNet` 下为使用残差网络，文件命名格式：`数据维度(是否归一化)_训练轮数_测试分数`
+
+`/LCNet` 下为使用LCNet（conv），文件命名格式：`数据维度(是否归一化)_训练轮数_测试分数`
 
 &nbsp;
 
