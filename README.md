@@ -115,6 +115,14 @@ LCNet_train.py、LCNet_model.py、LCNet_test.py
 
 # 数据集说明
 
+### 当前模型对应数据集
+
+| 模型     | train                  | valid                  | test                  |
+| -------- | ---------------------- | ---------------------- | --------------------- |
+| baseline | unmodified/train.csv   | unmodified/valid.csv   | unmodified/test_a.csv |
+| ResNet   | 同上                   | 同上                   | 同上                  |
+| LCNet    | 33_dimension/train.csv | 33_dimension/valid.csv | 33_dimension/test.csv |
+
 ### 数据分析
 
 所有35维数据的相关性分析：
@@ -162,11 +170,17 @@ LCNet_train.py、LCNet_model.py、LCNet_test.py
 
 ### lrk
 
-数据预处理：transforms（已完成归一化）、删除部分维度（已完成相关性分析）
+###### 一期
 
-尝试不同：loss_fn、optimizer
+​		数据预处理：transforms（已完成归一化）、删除部分维度（已完成相关性分析）
 
-超参数优化加到ResNet网络中（已完成），试试效果
+​		尝试不同：loss_fn、optimizer
+
+​		超参数优化加到ResNet网络中（已完成），试试效果
+
+###### 二期
+
+​		尝试机器学习模型分类：LGBM、SVM、随机森林
 
 ### xyf
 
