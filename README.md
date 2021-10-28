@@ -109,9 +109,11 @@ LCNet_train.py、LCNet_model.py、LCNet_test.py
 
 **直接对三种模型进行加权测试**
 - 注意目前没有baseline的模型(主要是没有训好的baseline提交的分数)，如果有了之后，
-要和其他文件的命名方式一样并且放在history/Fake1DAttention下
+  要和其他文件的命名方式一样并且放在history/Fake1DAttention下
 - 模型的各种参数设置在`config/test_config.py`中，可自己查阅（目前baseline模型的config不正确，所以不要直接跑！！！！）
 - 每次运行后，各个模型也会输出一个结果（在history下对应目录，反复运行会覆盖），总加权后的结果也会输出（也就是说目前是4个）
+
+&nbsp;
 
 # 数据集说明
 
