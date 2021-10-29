@@ -83,8 +83,7 @@ ML/SVM.py
 
 ### 目前效果
 
-SVC—rbf—C=10—0.7034
-SVC—poly—C=10—0.65xx
+SVC—poly—degree=2—C=11—0.7656
 
 
 
