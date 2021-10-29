@@ -59,6 +59,37 @@ LCNet_train.py、LCNet_model.py、LCNet_test.py
 
 &nbsp;
 
+# 模型四：SVM
+
+### 说明
+
+使用sklearn库调用SVM的现有模型进行预测，数据集为28维归一化后空值填-1的数据集
+
+### 相关脚本
+
+ML/SVM.py
+
+### 数据集目录
+
+`data/ML/`
+
+### 参数
+
+`--clf`	选择分类器：SVC、LinearSVC
+
+`--kernel`	选择核函数：rbf、poly
+
+`--C`	错误项的惩罚系数
+
+### 目前效果
+
+SVC—rbf—C=10—0.7034
+SVC—poly—C=10—0.65xx
+
+
+
+&nbsp;
+
 # 决策树说明
 ### 代码说明
 
@@ -176,13 +207,13 @@ LCNet_train.py、LCNet_model.py、LCNet_test.py
 
 ​		数据预处理：transforms（已完成归一化）、删除部分维度（已完成相关性分析）
 
-​		尝试不同：loss_fn、optimizer
+​		尝试不同：loss_fn、optimizer（均已完成，效果不佳）
 
 ​		超参数优化加到ResNet网络中（已完成），试试效果
 
 ###### 二期
 
-​		尝试机器学习模型分类：LGBM、SVM、随机森林
+​		尝试机器学习模型分类：LGBM、SVM（整理数据集ing）、随机森林
 
 ### xyf
 
