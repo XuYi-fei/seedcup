@@ -105,8 +105,22 @@ def normalize() -> None:
     test.to_csv("33_normalized/test.csv")
 
 
+def spearman_select(path):
+    fp = pd.read_csv("original/spearman.csv")
+    spearman = fp['label']
+    object = pd.read_csv(path)
+    result = pd.DataFrame(columns=[])
+    result['id'] = object['id']
+
+    for i in range(spearman.shape[0]):
+        if(abs(spearman[i]) > 0.1):
+            result[object.columns[i]] = object[object.columns[i]]
+    result.to_csv(f"{(path.split('/'))[-1]}")
+
+
 if __name__ == "__main__":
     # add_track()
     # delete_columns()
     # generate_test()
-    normalize()
+    # normalize()
+    # spearman_select("ML/33_dimension/test.csv")

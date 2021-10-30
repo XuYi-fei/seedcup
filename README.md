@@ -187,7 +187,7 @@ SVC—poly—degree=2—C=11—0.7656
 
 `unmodified/`	baseline的数据集
 
-`ML/`	机器学习算法的数据集
+`ML/`	机器学习算法的数据集，其中 `spearman_selected`下是与label的斯皮尔曼相关系数大于0.1的量组成的数据集
 
 ### 随机切分数据
 
