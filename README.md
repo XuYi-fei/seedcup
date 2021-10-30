@@ -67,7 +67,7 @@ LCNet_train.py、LCNet_model.py、LCNet_test.py
 
 ### 相关脚本
 
-ML/SVM.py
+SVM.py
 
 ### 数据集
 
