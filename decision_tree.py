@@ -5,6 +5,7 @@ import graphviz
 import time
 import pickle
 from config.tree_decision_config import config
+from metric import *
 
 
 class TreeTrainSeedDataset:
@@ -49,7 +50,11 @@ def ValidModel(model) -> float:
     result = model.predict(dataset.X)
     total_num = len(result)
     acc = np.sum(np.array(result) - np.array(dataset.Y) == 0) / total_num
+    P, R, F_score = precision_list(result, dataset.Y), recall_list(result, dataset.Y), f_score_list(result, dataset.Y)
     print("The valid accuracy ============>", acc, "%")
+    print("The valid precision ============>", P, "%")
+    print("The valid recall ============>", R, "%")
+    print("The valid f_score ============>", F_score, "%")
     return acc
 
 
@@ -59,7 +64,7 @@ def TestModel():
     dataset = TreeTestSeedDataset(config.test_data)
     result = model.predict(dataset.X)
     result = map(lambda x: str(x), result)
-    with open("decision_tree_result.txt", "w") as f:
+    with open("history/ML/DecisionTree_max-depth=3_0.8142.txt", "w") as f:
         f.write("\n".join(result))
 
 

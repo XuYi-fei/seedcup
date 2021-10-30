@@ -1,3 +1,5 @@
+from typing import List
+
 import torch
 
 
@@ -59,6 +61,24 @@ def Fscore(pred: torch.Tensor, y: torch.Tensor):
     F = 5 * P * R / (2 * P + 3 * R)
 
     return F
+
+
+def precision_list(pre_result: List[int], y_result: List[int]) -> float:
+    TP = sum([1 if pre_result[i] == 1 and y_result[i] == 1 else 0 for i in range(len(pre_result))])
+    FP = sum([1 if pre_result[i] == 1 and y_result[i] == 0 else 0 for i in range(len(pre_result))])
+    return TP / (TP + FP)
+
+
+def recall_list(pre_result: List[int], y_result: List[int]) -> float:
+    TP = sum([1 if pre_result[i] == 1 and y_result[i] == 1 else 0 for i in range(len(pre_result))])
+    FN = sum([1 if pre_result[i] == 0 and y_result[i] == 1 else 0 for i in range(len(pre_result))])
+    return TP / (TP + FN)
+
+
+def f_score_list(pre_result: List[int], y_result: List[int]) -> float:
+    P = precision_list(pre_result, y_result)
+    R = recall_list(pre_result, y_result)
+    return 5 * P * R / (2 * P + 3 * R)
 
 
 if __name__ == "__main__":
