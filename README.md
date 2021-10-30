@@ -89,7 +89,7 @@ SVC—poly—degree=2—C=11—0.7656
 
 &nbsp;
 
-# 决策树说明
+# 模型五：决策树
 ### 代码说明
 
 - ``decision_tree.py``: 运行决策树train和test的文件
@@ -107,6 +107,10 @@ SVC—poly—degree=2—C=11—0.7656
     ```bash
     python decision_tree.py --test True --model treeCheckpoints/10-20-14-18.pkl
     ```
+
+### 目前效果
+
+效果一般，待尝试
 
 &nbsp;
 
@@ -149,11 +153,13 @@ SVC—poly—degree=2—C=11—0.7656
 
 ### 当前模型对应数据集
 
-| 模型     | train                  | valid                  | test                  |
-| -------- | ---------------------- | ---------------------- | --------------------- |
-| baseline | unmodified/train.csv   | unmodified/valid.csv   | unmodified/test_a.csv |
-| ResNet   | 同上                   | 同上                   | 同上                  |
-| LCNet    | 33_dimension/train.csv | 33_dimension/valid.csv | 33_dimension/test.csv |
+| 模型     | train                     | valid                     | test                     |
+| -------- | ------------------------- | ------------------------- | ------------------------ |
+| baseline | unmodified/train.csv      | unmodified/valid.csv      | unmodified/test_a.csv    |
+| ResNet   | 同上                      | 同上                      | 同上                     |
+| LCNet    | 33_dimension/train.csv    | 33_dimension/valid.csv    | 33_dimension/test.csv    |
+| SVC_rbf  | ML/33_dimension/train.csv | ML/33_dimension/valid.csv | ML/33_dimension/test.csv |
+| SVC_poly | ML/28_dimension/train.csv | ML/28_dimension/valid.csv | ML/28_dimension/test.csv |
 
 ### 数据分析
 
@@ -178,6 +184,8 @@ SVC—poly—degree=2—C=11—0.7656
 `original/`	原始数据
 
 `unmodified/`	baseline的数据集
+
+`ML/`	机器学习算法的数据集
 
 ### 随机切分数据
 
