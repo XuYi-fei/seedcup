@@ -10,7 +10,7 @@ import argparse
 
 
 class SVM_SVC:
-    def __init__(self, clf, kernel, C, degree, trainfile="../data/ML/train.csv", validfile="../data/ML/valid.csv", testfile="../data/ML/test.csv"):
+    def __init__(self, clf, kernel, C, degree, trainfile="../data/ML/33_dimension/train.csv", validfile="../data/ML/33_dimension/valid.csv", testfile="../data/ML/33_dimension/test.csv"):
         super(SVM_SVC, self).__init__()
 
         train: pd.DataFrame = pd.read_csv(trainfile)
