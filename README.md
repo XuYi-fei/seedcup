@@ -23,7 +23,7 @@ baseline_train.py、baseline_model.py、baseline_test.py
 
 ### 相关脚本
 
-res_hyper-evol.py、res_model、res_test.py
+res_train.py、res_model、res_test.py
 
 ### 参数
 
@@ -80,6 +80,8 @@ SVM.py
 `--kernel`	选择核函数：rbf、poly
 
 `--C`	错误项的惩罚系数
+
+`--auto`	自动把C从0~50以0.1为步长依次拟合预测并保存结果到`auto_result.csv` 中
 
 ### 目前效果
 
@@ -204,7 +206,7 @@ SVC—poly—degree=2—C=11—0.7656
 
 `/LCNet` 下为使用LCNet（conv），文件命名格式：`数据维度(是否归一化)_训练轮数_测试分数`
 
-`/ML`	下为使用机器学习算法预测的结果及分数
+`/ML`	下为使用机器学习算法预测的结果及分数，以及auto模式下的模型效果
 
 `/weighted`	下为几个模型预测结果加权后的结果及分数
 
