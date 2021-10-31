@@ -112,8 +112,8 @@ if __name__ == "__main__":
     if(args.auto == False):
         print(
             f"classifier: {args.clf}\nkernel: {args.kernel}\nC: {args.C}\nfeature: {args.feature}")
-        svm = SVM(args.clf, args.kernel, args.C, args.degree, f"data/ML/{args.feature}_demension/train.csv",
-                  f"data/ML/{args.feature}_demension/valid.csv", f"data/ML/{args.feature}_demension/test.csv")
+        svm = SVM(args.clf, args.kernel, args.C, args.degree, f"data/ML/{args.feature}_dimension/train.csv",
+                  f"data/ML/{args.feature}_dimension/valid.csv", f"data/ML/{args.feature}_dimension/test.csv")
         svm.fit()
         print(
             f"valid:\tPrecision: {svm.P()}\tRecall: {svm.R()}\tFscore: {svm.Fscore()}")
@@ -132,8 +132,8 @@ if __name__ == "__main__":
 
         for i in range(1, 500):
             C = float(i) / 1000
-            svm = SVM(clf, kernel, C, degree, f"data/ML/{args.feature}_demension/train.csv",
-                      f"data/ML/{args.feature}_demension/valid.csv", f"data/ML/{args.feature}_demension/test.csv")
+            svm = SVM(clf, kernel, C, degree, f"data/ML/{args.feature}_dimension/train.csv",
+                      f"data/ML/{args.feature}_dimension/valid.csv", f"data/ML/{args.feature}_dimension/test.csv")
             svm.fit()
             P, R, Fscore = svm.P(), svm.R(), svm.Fscore()
             print(f"[C = {C}]\tPrecision: {P}\tRecall: {R}\tFscore: {Fscore}\n")

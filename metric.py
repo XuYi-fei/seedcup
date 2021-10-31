@@ -64,14 +64,26 @@ def Fscore(pred: torch.Tensor, y: torch.Tensor):
 
 
 def precision_list(pre_result: List[int], y_result: List[int]) -> float:
-    TP = sum([1 if pre_result[i] == 1 and y_result[i] == 1 else 0 for i in range(len(pre_result))])
-    FP = sum([1 if pre_result[i] == 1 and y_result[i] == 0 else 0 for i in range(len(pre_result))])
+    TP = sum([1 if pre_result[i] == 1 and y_result[i] ==
+             1 else 0 for i in range(len(pre_result))])
+    FP = sum([1 if pre_result[i] == 1 and y_result[i] ==
+             0 else 0 for i in range(len(pre_result))])
+    return TP / (TP + FP)
+
+
+def precision_list_(pre_result: List[int], y_result: List[int]) -> float:
+    TP = sum([1 if pre_result[i] == 0 and y_result[i] ==
+             0 else 0 for i in range(len(pre_result))])
+    FP = sum([1 if pre_result[i] == 0 and y_result[i] ==
+             1 else 0 for i in range(len(pre_result))])
     return TP / (TP + FP)
 
 
 def recall_list(pre_result: List[int], y_result: List[int]) -> float:
-    TP = sum([1 if pre_result[i] == 1 and y_result[i] == 1 else 0 for i in range(len(pre_result))])
-    FN = sum([1 if pre_result[i] == 0 and y_result[i] == 1 else 0 for i in range(len(pre_result))])
+    TP = sum([1 if pre_result[i] == 1 and y_result[i] ==
+             1 else 0 for i in range(len(pre_result))])
+    FN = sum([1 if pre_result[i] == 0 and y_result[i] ==
+             1 else 0 for i in range(len(pre_result))])
     return TP / (TP + FN)
 
 
