@@ -151,7 +151,7 @@ SVC—poly—degree=2—C=11—0.7656
 
 &nbsp;
 
-#### 3. `vote_lrk.py`
+### 3. `vote_lrk.py`
 
 对当前五个模型的最优参数训出模型的预测结果进行加权，结果保存在 `history/weighted/vote_lrk.txt`
 
