@@ -193,10 +193,6 @@ SVC—poly—degree=2—C=11—0.7656
 
 `33_dimension/` 	加入了user_track里的5个维度
 
-`28_normalze/`	归一化后的28维数据集
-
-`33_normalze/`	归一化后的33维数据集
-
 `original/`	原始数据
 
 `unmodified/`	baseline的数据集
@@ -204,6 +200,8 @@ SVC—poly—degree=2—C=11—0.7656
 `ML/`	机器学习算法的数据集，其中 `spearman_selected`下是与label的斯皮尔曼相关系数大于0.1的量组成的数据集
 
 `balanced`	后缀的是正负样本平衡后的数据集
+
+`0.5valid`	前缀的是正负样本比为1：1的验证集，没有此前缀的是6：4的验证集
 
 ### 随机切分数据
 
