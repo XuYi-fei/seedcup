@@ -3,14 +3,15 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
 from colorama import Fore
-
 from baseline_model import Fake1DAttention
 from metric import *
 import pandas as pd
-
 import os
 import argparse
 from hyp_evol import *
+
+
+rate = ""  # 默认为6：4的正负样本比例，若要改为1：1则取rate=“0.5”
 
 
 class SeedDataset(Dataset):
@@ -96,7 +97,7 @@ def parse_args():
     parser.add_argument('--train', type=str,
                         default="./data/unmodified/train.csv")
     parser.add_argument('--valid', type=str,
-                        default="./data/unmodified/valid.csv")
+                        default=f"./data/unmodified/{rate}valid.csv")
     parser.add_argument('--device', type=str,
                         default='cpu')
     parser.add_argument('--in_feature', type=int,

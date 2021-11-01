@@ -16,8 +16,10 @@ from LCNet_model import *
 from baseline_model import *
 from decision_tree import *
 from SVM import *
+from AdaBoost import *
 
-rate = ""  # 默认为6：4的正负样本比例，若要改为1：1则取rate=“rate”
+
+rate = ""  # 默认为6：4的正负样本比例，若要改为1：1则取rate=“0.5”
 
 
 class SeedDataset(Dataset):
@@ -39,6 +41,24 @@ class SeedDataset(Dataset):
 
 
 class SVM(SVM):
+    def P1(self):
+        index_ = self.classifier.predict(self.valid_x) == 1
+        TP = (self.valid_y[index_] == 1).sum()
+        if(index_.sum() == 0):
+            return 0
+
+        return TP / index_.sum()
+
+    def P0(self):
+        index_ = self.classifier.predict(self.valid_x) == 0
+        TP = (self.valid_y[index_] == 0).sum()
+        if(index_.sum() == 0):
+            return 0
+
+        return TP / index_.sum()
+
+
+class AdaBoost(AdaBoost):
     def P1(self):
         index_ = self.classifier.predict(self.valid_x) == 1
         TP = (self.valid_y[index_] == 1).sum()
@@ -143,6 +163,15 @@ def parse_args():
     parser.add_argument('--SVM_result', type=str,
                         default="history/test_b/bestmodel_on_test_b/33_SVC_rbf_output.txt")
 
+    parser.add_argument('--Ada_feature', type=int, default=33)
+    parser.add_argument('--Ada_base_estimator',
+                        type=str, default="DicisionTree")
+    parser.add_argument('--Ada_n_estimators', type=int, default=10)
+    parser.add_argument('--Ada_lr', type=float, default=1.0)
+    parser.add_argument('--Ada_C', type=float, default=0.6)
+    parser.add_argument('--Ada_result', type=str,
+                        default="history/test_b/bestmodel_on_test_b/DicisionTree_10_1.0_33_2_rbf_C-0.6_output.txt")
+
     return parser.parse_args()
 
 
@@ -156,34 +185,32 @@ if __name__ == "__main__":
     # ResNet
     Res_valid = DataLoader(SeedDataset(args.ResNet_valid),
                            batch_size=1, shuffle=False)
-    # Res_valid = DataLoader(SeedDataset("data/unmodified/test_a.csv"),
-    #                        batch_size=1, shuffle=False)
     Res_P1, Res_P0 = valid("ResNet", Res_valid, args.ResNet_model,
                            nn.CrossEntropyLoss().to(device), device)
 
     # LCNet
     LCNet_valid = DataLoader(SeedDataset(args.LCNet_valid),
                              batch_size=1, shuffle=False)
-    # LCNet_valid = DataLoader(SeedDataset("data/33_dimension/test_a.csv"),
-    #                          batch_size=1, shuffle=False)
     LC_P1, LC_P0 = valid("LCNet", LCNet_valid, args.LCNet_model,
                          nn.CrossEntropyLoss().to(device), device)
 
     # Baseline
     Baseline_valid = DataLoader(SeedDataset(args.Baseline_valid),
                                 batch_size=1, shuffle=False)
-    # Baseline_valid = DataLoader(SeedDataset("data/unmodified/test_a.csv"),
-    #                             batch_size=1, shuffle=False)
     Base_P1, Base_P0 = valid("Baseline", Baseline_valid, args.Baseline_model,
                              nn.CrossEntropyLoss().to(device), device)
 
     # SVM
     svm = SVM(args.SVM_clf, args.SVM_kernel, args.SVM_C, args.SVM_degree, f"data/ML/{args.SVM_feature}_dimension/train.csv",
               f"data/ML/{args.SVM_feature}_dimension/{rate}valid.csv", f"data/ML/{args.SVM_feature}_dimension/test_a.csv")
-    # svm = SVM(args.SVM_clf, args.SVM_kernel, args.SVM_C, args.SVM_degree, f"data/ML/{args.SVM_feature}_dimension/train.csv",
-    #           f"data/ML/{args.SVM_feature}_dimension/test_a.csv", f"data/ML/{args.SVM_feature}_dimension/test_a.csv")
     svm.fit()
     SVM_P1, SVM_P0 = svm.P1(), svm.P0()
+
+    # SVM
+    Ada = AdaBoost(args.Ada_base_estimator, args.Ada_n_estimators, args.Ada_lr, args.Ada_C, f"data/ML/{args.Ada_feature}_dimension/train.csv",
+                   f"data/ML/{args.Ada_feature}_dimension/{rate}valid.csv", f"data/ML/{args.Ada_feature}_dimension/test_b.csv")
+    Ada.fit()
+    Ada_P1, Ada_P0 = Ada.P1(), Ada.P0()
 
     # Dicision Tree
     with open(args.DicisionTree_pkl, 'rb') as input:
@@ -192,18 +219,19 @@ if __name__ == "__main__":
     # DT_P1, DT_P0 = ValidModel(decision_tree, "data\ML/33_dimension/valid.csv")
 
     print(
-        f"Res_P1: {Res_P1}\tRes_P0: {Res_P0}\nLC_P1: {LC_P1}\tLC_P0: {LC_P0}\nBase_P1: {Base_P1}\tBase_P0: {Base_P0}\nSVM_P1: {SVM_P1}\tSVM_P0: {SVM_P0}\nDT_P1: {DT_P1}\tDT_P0: {DT_P0}\n")
+        f"Res_P1: {Res_P1}\tRes_P0: {Res_P0}\nLC_P1: {LC_P1}\tLC_P0: {LC_P0}\nBase_P1: {Base_P1}\tBase_P0: {Base_P0}\nSVM_P1: {SVM_P1}\tSVM_P0: {SVM_P0}\nAda_P1: {Ada_P1}\tAda_P0: {Ada_P0}\nDT_P1: {DT_P1}\tDT_P0: {DT_P0}\n")
 
-    # result = open("history/test_b/weighted/vote_lrk.txt", "w")
-    # with open(args.ResNet_result) as Res_r, open(args.LCNet_result) as LC_r, open(args.Baseline_result) as Base_r, open(args.SVM_result) as SVM_r, open(args.DicisionTree_result) as DT_r:
-    #     for _ in range(456):
-    #         l1 = int(Res_r.readline())
-    #         l2 = int(LC_r.readline())
-    #         l3 = int(Base_r.readline())
-    #         l4 = int(SVM_r.readline())
-    #         l5 = int(DT_r.readline())
+    result = open("history/test_b/weighted/vote_lrk.txt", "w")
+    with open(args.ResNet_result) as Res_r, open(args.LCNet_result) as LC_r, open(args.Baseline_result) as Base_r, open(args.SVM_result) as SVM_r, open(args.DicisionTree_result) as DT_r, open(args.Ada_result) as Ada_r:
+        for _ in range(456):
+            l1 = int(Res_r.readline())
+            l2 = int(LC_r.readline())
+            l3 = int(Base_r.readline())
+            l4 = int(SVM_r.readline())
+            l5 = int(DT_r.readline())
+            l6 = int(Ada_r.readline())
 
-    #         r1 = l1*Res_P1 + l2*LC_P1 + l3*Base_P1 + l4*SVM_P1 + l5 * DT_P1
-    #         r0 = (1-l1)*Res_P0 + (1-l2)*LC_P0 + (1-l3) * \
-    #             Base_P0 + (1-l4)*SVM_P0 + (1-l5)*DT_P0
-    #         result.write(f"{int(r1>r0)}\n")
+            r1 = l1*Res_P1 + l2*LC_P1 + l3*Base_P1 + l4*SVM_P1 + l5*DT_P1 + l6*Ada_P1
+            r0 = (1-l1)*Res_P0 + (1-l2)*LC_P0 + (1-l3)*Base_P0 + \
+                (1-l4)*SVM_P0 + (1-l5)*DT_P0 + (1-l6)*Ada_P0
+            result.write(f"{int(r1>r0)}\n")

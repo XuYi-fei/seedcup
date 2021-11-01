@@ -14,9 +14,11 @@ from LCNet_model import *
 from colorama import Fore
 from metric import *
 import pandas as pd
-
 import os
 import argparse
+
+
+rate = ""  # 默认为6：4的正负样本比例，若要改为1：1则取rate=“0.5”
 
 
 class SeedDataset(Dataset):
@@ -95,7 +97,7 @@ def parse_args():
     parser.add_argument('--train', type=str,
                         default="./data/33_dimension/train.csv")
     parser.add_argument('--valid', type=str,
-                        default="./data/33_dimension/valid.csv")
+                        default=f"./data/33_dimension/{rate}valid.csv")
     parser.add_argument('--in_feature', type=int,
                         default=33)
     parser.add_argument('--device', type=str,

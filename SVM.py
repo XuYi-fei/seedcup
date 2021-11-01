@@ -8,6 +8,9 @@ from sklearn.preprocessing import StandardScaler
 import argparse
 
 
+rate = ""  # 默认为6：4的正负样本比例，若要改为1：1则取rate=“rate”
+
+
 class SVM:
     def __init__(self, clf, kernel, C, degree, trainfile, validfile, testfile):
         super(SVM, self).__init__()
@@ -112,7 +115,7 @@ if __name__ == "__main__":
         print(
             f"classifier: {args.clf}\nkernel: {args.kernel}\nC: {args.C}\nfeature: {args.feature}")
         svm = SVM(args.clf, args.kernel, args.C, args.degree, f"data/ML/{args.feature}_dimension/train.csv",
-                  f"data/ML/{args.feature}_dimension/valid.csv", f"data/ML/{args.feature}_dimension/test_b.csv")
+                  f"data/ML/{args.feature}_dimension/{rate}valid.csv", f"data/ML/{args.feature}_dimension/test_b.csv")
         svm.fit()
         print(
             f"valid:\tPrecision: {svm.P()}\tRecall: {svm.R()}\tFscore: {svm.Fscore()}")
@@ -132,7 +135,7 @@ if __name__ == "__main__":
         for i in range(1, 500):
             C = float(i) / 1000
             svm = SVM(clf, kernel, C, degree, f"data/ML/{args.feature}_dimension/train.csv",
-                      f"data/ML/{args.feature}_dimension/valid.csv", f"data/ML/{args.feature}_dimension/test_b.csv")
+                      f"data/ML/{args.feature}_dimension/{rate}valid.csv", f"data/ML/{args.feature}_dimension/test_b.csv")
             svm.fit()
             P, R, Fscore = svm.P(), svm.R(), svm.Fscore()
             print(f"[C = {C}]\tPrecision: {P}\tRecall: {R}\tFscore: {Fscore}\n")
