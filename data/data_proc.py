@@ -70,12 +70,13 @@ def add_track() -> None:
 
 
 def generate_test() -> None:
-    test_a = DataFrame(pd.read_csv("data/original/test_a.csv"))
-    all_info = DataFrame(pd.read_csv("data/train/all_info.csv"))
+    test_a = DataFrame(pd.read_csv("test_b.csv"))
+    all_info = DataFrame(pd.read_csv("original/all_info.csv"))
 
     result = all_info.merge(test_a, how='right', on='id')
     result.drop(columns=['label'], inplace=True)
-    result.to_csv("data/test/test_info.csv", sep=',', index=False, header=True)
+    result.to_csv("unmodified/test_b.csv",
+                  sep=',', index=False, header=True)
 
 
 def normalize() -> None:
@@ -105,8 +106,22 @@ def normalize() -> None:
     test.to_csv("33_normalized/test.csv")
 
 
+def spearman_select(path):
+    fp = pd.read_csv("original/spearman.csv")
+    spearman = fp['label']
+    object = pd.read_csv(path)
+    result = pd.DataFrame(columns=[])
+    result['id'] = object['id']
+
+    for i in range(spearman.shape[0]):
+        if(abs(spearman[i]) > 0.1):
+            result[object.columns[i]] = object[object.columns[i]]
+    result.to_csv(f"{(path.split('/'))[-1]}")
+
+
 if __name__ == "__main__":
     # add_track()
     # delete_columns()
-    # generate_test()
-    normalize()
+    generate_test()
+    # normalize()
+    # spearman_select("ML/33_dimension/test.csv")
