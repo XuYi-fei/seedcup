@@ -116,7 +116,7 @@ SVC—poly—degree=2—C=11—0.7656
 
 &nbsp;
 
-# 模型六：随机神经
+# 模型六：随机森林
 ### 代码说明
 
 - ``forest.py``: 运行决策树train和test的文件
