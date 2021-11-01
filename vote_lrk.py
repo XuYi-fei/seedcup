@@ -19,7 +19,7 @@ from SVM import *
 from AdaBoost import *
 
 
-rate = ""  # 默认为6：4的正负样本比例，若要改为1：1则取rate=“0.5”
+rate = "0.5"  # 默认为6：4的正负样本比例，若要改为1：1则取rate=“0.5”
 
 
 class SeedDataset(Dataset):
@@ -107,7 +107,7 @@ def valid(Net, dataloader, args_model, loss_fn, device):
 
     with torch.no_grad():
         pred, Y = [], []
-        for batch, (X, y) in enumerate(dataloader):
+        for _, (X, y) in enumerate(dataloader):
             X, y = X.to(device), y.to(device)
 
             logit = model(X)
@@ -216,7 +216,9 @@ if __name__ == "__main__":
     with open(args.DicisionTree_pkl, 'rb') as input:
         decision_tree = pickle.load(input)
     DT_P1, DT_P0 = ValidModel(decision_tree, args.DicisionTree_valid)
-    # DT_P1, DT_P0 = ValidModel(decision_tree, "data\ML/33_dimension/valid.csv")
+
+    # Random Forest
+    # TODO
 
     print(
         f"Res_P1: {Res_P1}\tRes_P0: {Res_P0}\nLC_P1: {LC_P1}\tLC_P0: {LC_P0}\nBase_P1: {Base_P1}\tBase_P0: {Base_P0}\nSVM_P1: {SVM_P1}\tSVM_P0: {SVM_P0}\nAda_P1: {Ada_P1}\tAda_P0: {Ada_P0}\nDT_P1: {DT_P1}\tDT_P0: {DT_P0}\n")
