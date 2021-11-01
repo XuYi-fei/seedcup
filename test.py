@@ -1,4 +1,3 @@
-import inspect
 import os
 from functools import wraps
 
@@ -7,7 +6,7 @@ from torch.utils.data import DataLoader
 from config.test_config import test_config
 from LCNet_model import CTNet
 from dataset.seed_dataset import SeedDataset
-from baseline_model import Fake1DAttention
+from models.baseline.baseline_model import Fake1DAttention
 from res_model import *
 
 

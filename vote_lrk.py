@@ -6,14 +6,10 @@
 # -------------------------------------------------------------------------------
 
 
-import torch
-import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
-import pandas as pd
-import argparse
 from res_model import *
 from LCNet_model import *
-from baseline_model import *
+from models.baseline.baseline_model import *
 from decision_tree import *
 from SVM import *
 from AdaBoost import *

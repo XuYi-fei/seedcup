@@ -2,16 +2,17 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
+from res_model import *
 from colorama import Fore
-from baseline_model import Fake1DAttention
 from metric import *
 import pandas as pd
 import os
 import argparse
+import numpy as np
 from hyp_evol import *
 
 
-rate = "0.5"  # 默认为6：4的正负样本比例，若要改为1：1则取rate=“0.5”
+rate = ""  # 默认为6：4的正负样本比例，若要改为1：1则取rate=“0.5”
 
 
 class SeedDataset(Dataset):
@@ -20,6 +21,7 @@ class SeedDataset(Dataset):
         super().__init__()
         self.data: pd.DataFrame = pd.read_csv(annotations_file)
         self.data: pd.DataFrame = self.data[self.data['label'].notna()]
+
         self.Y = self.data['label']
         self.X = self.data.drop(columns=['id', 'label']).fillna(value=-1)
 
@@ -49,15 +51,15 @@ def train(dataloader, model, loss_fn, optimizer, device, positive_weight):
         loss.backward()
         optimizer.step()
 
-        if batch % 100 == 0:
-            loss = loss.item()
-            print(
-                f"{Fore.GREEN + '[train]===>'} loss: {loss} {'' + Fore.RESET}")
+        # if batch % 100 == 0:
+        #     loss = loss.item()
+        #     print(
+        #         f"{Fore.GREEN + '[train]===>'} loss: {loss} {'' + Fore.RESET}")
 
 
-def valid(dataloader, model, loss_fn, device) -> dict:
+def valid(dataloader, model, loss_fn, device):
     model.eval()
-
+    model = model.to(device)
     num_dataset = len(dataloader.dataset)
     loss = 0
 
@@ -90,20 +92,24 @@ def valid(dataloader, model, loss_fn, device) -> dict:
         return metric
 
 
+# For updating learning rate
+def update_lr(optimizer, lr):
+    for param_group in optimizer.param_groups:
+        param_group['lr'] = lr
+
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--evol', action='store_true',
                         help="hyperparameters auto evolve")
     parser.add_argument('--train', type=str,
-                        default="./data/unmodified/train.csv")
+                        default="../../data/unmodified/train.csv")
     parser.add_argument('--valid', type=str,
-                        default=f"./data/unmodified/{rate}valid.csv")
-    parser.add_argument('--device', type=str,
-                        default='cpu')
+                        default=f"../../data/unmodified/{rate}valid.csv")
     parser.add_argument('--in_feature', type=int,
                         default=28)
-    # parser.add_argument('--model', help="train with last model",
-    #                     type=str, default="./checkpoints/unevol/24_epoc.pt")
+    parser.add_argument('--device', type=str,
+                        default='cuda')
 
     return parser.parse_args()
 
@@ -113,14 +119,13 @@ if __name__ == '__main__':
     args = parse_args()
 
     torch.manual_seed(777)
-
     device = torch.device(args.device)
 
     batch_size, in_features, out_features = 30, args.in_feature, 2
     lr, positive_weight = 1e-3, 2.33
     epochs = 300
 
-    loss_fn = (nn.CrossEntropyLoss()).to(device)
+    loss_fn = nn.CrossEntropyLoss().to(device)
 
     train_dataset = SeedDataset(args.train)
     train_dataloader = DataLoader(
@@ -129,19 +134,21 @@ if __name__ == '__main__':
     valid_dataset = SeedDataset(args.valid)
     valid_dataloader = DataLoader(valid_dataset, batch_size=1, shuffle=False)
 
-    if(os.path.isdir(f"./checkpoints") == 0):
-        os.mkdir(f"./checkpoints")
+    if(os.path.isdir("../../checkpoints") == 0):
+        os.mkdir("../../checkpoints")
+    if(os.path.isdir("../../checkpoints/ResNet") == 0):
+        os.mkdir("../../checkpoints/ResNet")
 
     # Direct train
     if args.evol == False:
         print(
             f"\nepochs: {epochs}\ndevice: {device}\nin_feature: {args.in_feature}\ntrain_set: {args.train}\nvalid_set: {args.valid}\n")
 
-        if(os.path.isdir("./checkpoints/unevol") == 0):
-            os.mkdir("./checkpoints/unevol")
+        if(os.path.isdir("../../checkpoints/ResNet/unevol") == 0):
+            os.mkdir("../../checkpoints/ResNet/unevol")
 
-        model = Fake1DAttention(in_features, out_features).to(device)
-        optimizer = optim.Adagrad(model.parameters(), lr=lr)
+        model = ResNet(ResidualBlock, [2, 2, 2], in_features).to(device)
+        optimizer = optim.Adam(model.parameters(), lr=lr)
 
         for t in range(epochs):
             print(f"{Fore.GREEN + '===>'} Epoch {t + 1} {'' + Fore.RESET}\n"
@@ -150,12 +157,12 @@ if __name__ == '__main__':
                   optimizer, device, positive_weight)
             valid(valid_dataloader, model, loss_fn, device)
             torch.save(model.state_dict(),
-                       f"./checkpoints/unevol/{t}_epoc.pt")
+                       f"../../checkpoints/ResNet/unevol/{t}_epoc.pt")
 
     # Train after hyperparameter evolution
     else:
-        if(os.path.isdir("./checkpoints/evol") == 0):
-            os.mkdir("./checkpoints/evol")
+        if(os.path.isdir("../../checkpoints/ResNet/evol") == 0):
+            os.mkdir("../../checkpoints/ResNet/evol")
 
         hyp = {'lr': 1e-3,
                'positive_weight': 2.33}
@@ -165,25 +172,24 @@ if __name__ == '__main__':
                 'positive_weight': (1, 0.5, 5)}
 
         # Hyperparameter evolution
-        for g in range(10):
-            model = Fake1DAttention(in_features, out_features).to(device)
+        for g in range(50):
+            model = ResNet(ResidualBlock, [2, 2, 2], in_features).to(device)
 
-            if(os.path.isdir(f"./checkpoints/evol/generate_{g}") == 0):
-                os.mkdir(f"./checkpoints/evol/generate_{g}")
+            if(os.path.isdir(f"../../checkpoints/ResNet/evol/generate_{g}") == 0):
+                os.mkdir(f"../../checkpoints/ResNet/evol/generate_{g}")
 
             # Get hyperparameter from gene bank
             lr, positive_weight = GetHyper(meta, hyp)
-            optimizer = optim.Adagrad(model.parameters(), lr=lr)
+            optimizer = optim.Adam(model.parameters(), lr=lr)
 
-            # Train
-            for t in range(30):
-                print(
-                    "---------------------------------------\n"f"{Fore.GREEN + '===>'} Generate[{g}] --- Epoch{t + 1} {'' + Fore.RESET}:")
+            for t in range(120):
+                print(f"{Fore.GREEN + '===>'} Epoch {t + 1} {'' + Fore.RESET}\n"
+                      "---------------------------------------")
                 train(train_dataloader, model, loss_fn,
                       optimizer, device, positive_weight)
                 metric = valid(valid_dataloader, model, loss_fn, device)
                 torch.save(model.state_dict(),
-                           f"./checkpoints/evol/generate_{g}/{g}_{t}_epoc.pt")
+                           f"../../checkpoints/ResNet/evol/generate_{g}/{t}_epoc.pt")
 
             # Update the gene bank with fitness values
             Update_gene(hyp, metric)
@@ -195,8 +201,8 @@ if __name__ == '__main__':
         print(
             f"best hyperparameter : lr={lr}    positive_weight={positive_weight}\n")
 
-        model = Fake1DAttention(in_features, out_features).to(device)
-        optimizer = optim.Adagrad(model.parameters(), lr=lr)
+        model = ResNet(ResidualBlock, [2, 2, 2], in_features).to(device)
+        optimizer = optim.Adam(model.parameters(), lr=lr)
 
         for t in range(epochs):
             print(f"{Fore.GREEN + '===>'} Epoch {t + 1} {'' + Fore.RESET}\n"
@@ -204,7 +210,8 @@ if __name__ == '__main__':
             train(train_dataloader, model, loss_fn,
                   optimizer, device, positive_weight)
             valid(valid_dataloader, model, loss_fn, device)
-            if(os.path.isdir(f"./checkpoints/evol/best/best_epoc_{t}.pt") == 0):
-                os.mkdir(f"./checkpoints/evol/best/best_epoc_{t}.pt")
+
+            if(os.path.isdir("../../checkpoints/ResNet/evol/best") == 0):
+                os.mkdir("../../checkpoints/ResNet/evol/best")
             torch.save(model.state_dict(),
-                       f"./checkpoints/evol/best/best_epoc_{t}.pt")
+                       f"../../checkpoints/ResNet/evol/best/{t}_epoc.pt")
