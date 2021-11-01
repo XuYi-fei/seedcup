@@ -71,32 +71,32 @@ def TestModel():
     dataset = TreeTestSeedDataset(config.test_data)
     result = model.predict(dataset.X)
     result = map(lambda x: str(x), result)
-    with open("history/ML/DecisionTree_max-depth=3_0.8142.txt", "w") as f:
+    with open('decision_tree_result.txt', "w") as f:
         f.write("\n".join(result))
 
 
 if __name__ == "__main__":
 
     # clf, kernel, degree = args.clf, args.kernel, args.degree
-    criterions, max_depths, ccp_alphas = ['gini', 'entropy'], range(2, 10), range(0, 100)
-    result_file = pd.DataFrame(columns=['criterion', 'max-depth', 'ccp-alpha', 'Precision', 'Recall', 'Fscore'])
-
-    i = 0
-    for max_depth in max_depths:
-        for criterion in criterions:
-            for ccp_alpha in ccp_alphas:
-                ccp_alpha /= 100
-                model = tree.DecisionTreeClassifier(max_depth=max_depth, criterion=criterion,
-                                                    ccp_alpha=ccp_alpha)
-                dataset = TreeTrainSeedDataset(config.train_data)
-                model = model.fit(dataset.X, dataset.Y)
-                acc, precision, recall, f_score = ValidModel(model)
-                print(f"[criterion = {criterion} max-depth = {max_depth} ccp_alpha = {ccp_alpha}]\n Precision: {precision}\tRecall: {recall}\tFscore: {f_score}\n")
-                result_file.loc[i] = (str(criterion), str(max_depth), str(ccp_alpha), str(precision), str(recall), str(f_score))
-                i += 1
-
-    result_file.to_csv("auto_result.csv")
-    # if config.test:
-    #     TestModel()
-    # else:
-    #     TrainModel()
+    # criterions, max_depths, ccp_alphas = ['gini', 'entropy'], range(2, 10), range(0, 100)
+    # result_file = pd.DataFrame(columns=['criterion', 'max-depth', 'ccp-alpha', 'Precision', 'Recall', 'Fscore'])
+    #
+    # i = 0
+    # for max_depth in max_depths:
+    #     for criterion in criterions:
+    #         for ccp_alpha in ccp_alphas:
+    #             ccp_alpha /= 100
+    #             model = tree.DecisionTreeClassifier(max_depth=max_depth, criterion=criterion,
+    #                                                 ccp_alpha=ccp_alpha)
+    #             dataset = TreeTrainSeedDataset(config.train_data)
+    #             model = model.fit(dataset.X, dataset.Y)
+    #             acc, precision, recall, f_score = ValidModel(model)
+    #             print(f"[criterion = {criterion} max-depth = {max_depth} ccp_alpha = {ccp_alpha}]\n Precision: {precision}\tRecall: {recall}\tFscore: {f_score}\n")
+    #             result_file.loc[i] = (str(criterion), str(max_depth), str(ccp_alpha), str(precision), str(recall), str(f_score))
+    #             i += 1
+    #
+    # result_file.to_csv("auto_result.csv")
+    if config.test:
+        TestModel()
+    else:
+        TrainModel()
