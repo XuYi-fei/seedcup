@@ -11,7 +11,7 @@ import argparse
 from hyp_evol import *
 
 
-rate = ""  # 默认为6：4的正负样本比例，若要改为1：1则取rate=“0.5”
+rate = "0.5"  # 默认为6：4的正负样本比例，若要改为1：1则取rate=“0.5”
 
 
 class SeedDataset(Dataset):
