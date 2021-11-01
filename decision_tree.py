@@ -1,7 +1,8 @@
 from sklearn import tree
 import pandas as pd
 import numpy as np
-import graphviz
+from torch.utils import data
+# import graphviz
 import time
 import pickle
 from config.tree_decision_config import config
@@ -34,28 +35,34 @@ def TrainModel() -> None:
                                         splitter=config.splitter)
     dataset = TreeTrainSeedDataset(config.train_data)
     model = model.fit(dataset.X, dataset.Y)
-    acc, precision, recall, f_score = ValidModel(model)
+    acc = ValidModel(model)
     # draw the tree, output file is named by current time
     # dot_data = tree.export_graphviz(model, out_file=None)
     # graph = graphviz.Source(dot_data, directory='./treeCheckpoints')
     current_time = str(time.strftime("%d-%H-%M-%S", time.localtime()))
     # graph.render(current_time)
-    with open('treeCheckpoints\\' + current_time + "-" + str(f_score)[0:7] + '.pkl', 'wb') as output:
+    with open('treeCheckpoints\\' + current_time + "-" + str(acc)[0:7] + '.pkl', 'wb') as output:
         pickle.dump(model, output)
-        print("The model file is saved to " + 'treeCheckpoints\\' + current_time + "-" + str(f_score)[0:5] + '.pkl')
+        print("The model file is saved to " + 'treeCheckpoints\\' +
+              current_time + "-" + str(acc)[0:5] + '.pkl')
 
 
-def ValidModel(model) -> (float, float, float, float):
-    dataset = TreeTrainSeedDataset(config.valid_data)
+def ValidModel(model, Dataset=None) -> float:
+    if not Dataset:
+        dataset = TreeTrainSeedDataset(config.valid_data)
+    else:
+        dataset = TreeTrainSeedDataset(Dataset)
     result = model.predict(dataset.X)
     total_num = len(result)
     acc = np.sum(np.array(result) - np.array(dataset.Y) == 0) / total_num
-    P, R, F_score = precision_list(result, dataset.Y), recall_list(result, dataset.Y), f_score_list(result, dataset.Y)
-    print("The valid accuracy ============>", acc, "%")
-    print("The valid precision ============>", P, "%")
-    print("The valid recall ============>", R, "%")
-    print("The valid f_score ============>", F_score, "%")
-    return acc, P, R, F_score
+    P1, P0, R, F_score = precision_list(result, dataset.Y), precision_list_(result, dataset.Y), recall_list(
+        result, dataset.Y), f_score_list(result, dataset.Y)
+    # print("The valid accuracy ============>", acc, "%")
+    # print("The valid precision ============>", P, "%")
+    # print("The valid recall ============>", R, "%")
+    # print("The valid f_score ============>", F_score, "%")
+    # return acc, P1, R, F_score
+    return P1, P0
 
 
 def TestModel():

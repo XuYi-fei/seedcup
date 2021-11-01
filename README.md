@@ -1,4 +1,4 @@
-# 模型一：baseline
+# 模型一：Baseline
 ### 相关脚本
 
 baseline_train.py、baseline_model.py、baseline_test.py
@@ -151,6 +151,22 @@ SVC—poly—degree=2—C=11—0.7656
 
 &nbsp;
 
+### 3. `vote_lrk.py`
+
+对当前五个模型的最优参数训出模型的预测结果进行加权，结果保存在 `history/weighted/vote_lrk.txt`
+
+##### 加权方式
+
+&emsp;&emsp;把各模型在对应正负样本平衡的验证集valid上测试的“1”准确率和“0”准确率作为其在测试集test的“1”和“0”的可信度，对test中每个样本由各模型得出的分类结果结合其可信度来加权获得最终分类结果。
+
+##### 目前效果
+
+&emsp;&emsp;Base0.6581_Res0.8196_LC0.8226_DT0.8142——0.8409，比各模型单独都要好
+
+
+
+&nbsp;
+
 # 数据集说明
 
 ### 当前模型对应数据集
@@ -173,9 +189,7 @@ SVC—poly—degree=2—C=11—0.7656
 
 从user_track中提取出总登录次数 total_day、工作日登录比例 work_day_rate、周末登录比例 weekend_day_rate、平均第一次登陆时间 avg_early_hour、平均最后一次登录时间avg_last_hour，现在完整数据见 data\original\all_info.csv
 
-### 目录结构
-
-<img src="C:\Users\lrk\AppData\Roaming\Typora\typora-user-images\image-20211023160734280.png" alt="image-20211023160734280" style="zoom:67%;" />
+### 目录说明
 
 `33_dimension/` 	加入了user_track里的5个维度
 
@@ -187,7 +201,9 @@ SVC—poly—degree=2—C=11—0.7656
 
 `unmodified/`	baseline的数据集
 
-`ML/`	机器学习算法的数据集
+`ML/`	机器学习算法的数据集，其中 `spearman_selected`下是与label的斯皮尔曼相关系数大于0.1的量组成的数据集
+
+`balanced`	后缀的是正负样本平衡后的数据集
 
 ### 随机切分数据
 
@@ -226,7 +242,27 @@ SVC—poly—degree=2—C=11—0.7656
 
 ###### 二期
 
-​		尝试机器学习模型分类：LGBM、SVM（效果尚可）、随机森林
+​		数据集中正负样本平衡化（效果卓越，大幅提高了DicisionTree和SVM的效果）
+
+​		尝试机器学习模型分类：LGBM、SVM（效果尚可，0.76左右）、随机森林
+
+​		按与label斯皮尔曼相关性高的标签重组数据集，训练SVM（效果一般）
+
+###### 三期
+
+​		用在平衡样本数据集上的预测准确率作为加权对模型预测结果进行融合（效果较为优秀）
+
+​		加权脚本自动化，对不同参数下的相同模型预测结果进行加权
+
+###### 四期
+
+​		分析test_a的label
+
+​		重新整理所有形式的数据集，加入test_a_label
+
+​		处理data目录，去除冗杂，保持简洁
+
+​		各模型在新数据集上重新训练
 
 ### xyf
 
