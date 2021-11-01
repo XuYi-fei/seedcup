@@ -1,8 +1,7 @@
 import pandas as pd
 from sklearn.svm import SVC
 from sklearn.svm import NuSVC
-from sklearn.svm import SVR
-from sklearn.svm import NuSVR
+from sklearn.svm import OneClassSVM
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
