@@ -1,26 +1,24 @@
 from typing import Tuple
 
-import sklearn.ensemble
-from sklearn import tree
+import sklearn.ensemble as ensemble
 import numpy as np
 import time
 import pickle
-from config.tree_decision_config import config
+from config.forest_decision_config import config
 from metric import *
 from dataset.ML_dataset import MLTestSeedDataset, MLTrainSeedDataset
 
 
 def TrainModel() -> None:
-    model = tree.DecisionTreeClassifier(max_depth=config.max_depth, criterion=config.criterion,
-                                        splitter=config.splitter)
+    model = ensemble.RandomForestClassifier(max_depth=config.max_depth, random_state=config.random_state)
     dataset = MLTrainSeedDataset(config.train_data)
     model = model.fit(dataset.X, dataset.Y)
-    acc = ValidModel(model)
+    ValidModel(model)
     current_time = str(time.strftime("%d-%H-%M-%S", time.localtime()))
-    with open('treeCheckpoints\\' + current_time + "-" + str(acc)[0:7] + '.pkl', 'wb') as output:
+    with open('treeCheckpoints\\forest' + current_time + '.pkl', 'wb') as output:
         pickle.dump(model, output)
-        print("The model file is saved to " + 'treeCheckpoints\\' +
-              current_time + "-" + str(acc)[0:5] + '.pkl')
+        print("The model file is saved to " + 'treeCheckpoints/' +
+              current_time + '.pkl')
 
 
 def ValidModel(model, Dataset=None) -> Tuple[float, float]:
@@ -33,10 +31,10 @@ def ValidModel(model, Dataset=None) -> Tuple[float, float]:
     acc = np.sum(np.array(result) - np.array(dataset.Y) == 0) / total_num
     P1, P0, R, F_score = precision_list(result, dataset.Y), precision_list_(result, dataset.Y), recall_list(
         result, dataset.Y), f_score_list(result, dataset.Y)
-    # print("The valid accuracy ============>", acc, "%")
-    # print("The valid precision ============>", P, "%")
-    # print("The valid recall ============>", R, "%")
-    # print("The valid f_score ============>", F_score, "%")
+    print("The valid accuracy ============>", acc, "%")
+    print("The valid precision ============>", P1, "%")
+    print("The valid recall ============>", R, "%")
+    print("The valid f_score ============>", F_score, "%")
     # return acc, P1, R, F_score
     return P1, P0
 

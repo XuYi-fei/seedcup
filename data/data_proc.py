@@ -84,6 +84,7 @@ def normalize() -> None:
     valid = pd.read_csv("33_dimension/valid.csv")
     test = pd.read_csv("33_dimension/test.csv")
 
+
     train_id = train['id']
     train_label = train['label']
     valid_id = valid["id"]
