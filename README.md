@@ -116,6 +116,25 @@ SVC—poly—degree=2—C=11—0.7656
 
 &nbsp;
 
+# 模型六：随机神经
+### 代码说明
+
+- ``forest.py``: 运行决策树train和test的文件
+- ``config/forest_config.py``: 决策树的相关配置
+- train后的模型文件保存在treeCheckpoints下
+- test时需要指定具体的模型文件，输出到当前运行目录
+### 运行说明
+
+- 具体配置参见`config/tree_decision_config.py`
+- 训练代码示例:
+    ```bash
+    python decision_tree.py
+  ```
+- 测试代码示例:
+    ```bash
+    python decision_tree.py --test True --model treeCheckpoints/10-20-14-18.pkl
+    ```
+
 # 模型结果的加权
 ### 1. `utils/vote.py`
 - 脚本`utils/vote.py`
