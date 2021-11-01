@@ -91,7 +91,7 @@ SVC—poly—degree=2—C=11—0.7656
 
 &nbsp;
 
-# 模型五：决策树
+# 模型五：Decision Tree
 ### 代码说明
 
 - ``decision_tree.py``: 运行决策树train和test的文件
@@ -116,7 +116,8 @@ SVC—poly—degree=2—C=11—0.7656
 
 &nbsp;
 
-# 模型六：随机森林
+# 模型六：Random Forest
+
 ### 代码说明
 
 - ``forest.py``: 运行决策树train和test的文件
@@ -135,7 +136,40 @@ SVC—poly—degree=2—C=11—0.7656
     python decision_tree.py --test True --model treeCheckpoints/10-20-14-18.pkl
     ```
 
+&nbsp;
+
+# 模型七：AdaBoost
+
+### 说明
+
+使用sklearn库调用AdaBoost的现有模型进行预测
+
+### 相关脚本
+
+AdaBoost.py
+
+### 数据集
+
+`data/ML/`	进行了数据归一化、空值填充-1、正负样本均衡的处理
+
+### 参数
+
+`--clf`	选择分类器：SVC、LinearSVC
+
+`--kernel`	选择核函数：rbf、poly
+
+`--C`	错误项的惩罚系数
+
+`--auto`	自动把C从0~50以0.1为步长依次拟合预测并保存结果到`auto_result.csv` 中
+
+### 目前效果
+
+无
+
+&nbsp;
+
 # 模型结果的加权
+
 ### 1. `utils/vote.py`
 - 脚本`utils/vote.py`
 - 此脚本要求文件目录如下:
@@ -181,8 +215,6 @@ SVC—poly—degree=2—C=11—0.7656
 ##### 目前效果
 
 &emsp;&emsp;Base0.6581_Res0.8196_LC0.8226_DT0.8142——0.8409，比各模型单独都要好
-
-
 
 &nbsp;
 

@@ -4,7 +4,7 @@ from sklearn import tree
 import numpy as np
 import time
 import pickle
-from tree_decision_config import config
+from config.tree_decision_config import config
 from metric import *
 from dataset.ML_dataset import MLTestSeedDataset, MLTrainSeedDataset
 
