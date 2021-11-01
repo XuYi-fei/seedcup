@@ -70,12 +70,13 @@ def add_track() -> None:
 
 
 def generate_test() -> None:
-    test_a = DataFrame(pd.read_csv("data/original/test_a.csv"))
-    all_info = DataFrame(pd.read_csv("data/train/all_info.csv"))
+    test_a = DataFrame(pd.read_csv("test_b.csv"))
+    all_info = DataFrame(pd.read_csv("original/all_info.csv"))
 
     result = all_info.merge(test_a, how='right', on='id')
     result.drop(columns=['label'], inplace=True)
-    result.to_csv("data/test/test_info.csv", sep=',', index=False, header=True)
+    result.to_csv("unmodified/test_b.csv",
+                  sep=',', index=False, header=True)
 
 
 def normalize() -> None:
@@ -121,6 +122,6 @@ def spearman_select(path):
 if __name__ == "__main__":
     # add_track()
     # delete_columns()
-    # generate_test()
+    generate_test()
     # normalize()
     # spearman_select("ML/33_dimension/test.csv")

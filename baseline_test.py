@@ -13,7 +13,7 @@ def parse_args():
     parser.add_argument('-i', '--input', help="path to input files",
                         type=str, default="./data/unmodified/test_a.csv")
     parser.add_argument(
-        '-o', '--output', help="path to output files", type=str, default="output_a.txt")
+        '-o', '--output', help="path to output files", type=str, default="Base_output.txt")
     parser.add_argument('--input-features',
                         help="input dimension for model", type=int, default=28)
     parser.add_argument('--output-features',
