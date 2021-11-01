@@ -11,7 +11,7 @@ rate = "0.5"  # 默认为6：4的正负样本比例，若要改为1：1则取rat
 
 
 class AdaBoost:
-    def __init__(self, base_estimator, n_estimators, lr, C, trainfile, validfile, testfile):
+    def __init__(self, base_estimator, n_estimators, algorithm, lr, C, trainfile, validfile, testfile):
         super(AdaBoost, self).__init__()
 
         train: pd.DataFrame = pd.read_csv(trainfile)
@@ -32,8 +32,7 @@ class AdaBoost:
                 ("scaler", StandardScaler()),
                 ("clf", AdaBoostClassifier(
                     DecisionTreeClassifier(max_depth=2),
-                    algorithm='SAMME',
-                    # algorithm='SAMME.R',
+                    algorithm=algorithm,
                     n_estimators=n_estimators,
                     learning_rate=lr))])
 
@@ -43,7 +42,7 @@ class AdaBoost:
                 ("scaler", StandardScaler()),
                 ("clf", AdaBoostClassifier(
                     SVC(kernel="rbf", gamma='auto', C=C),
-                    algorithm='SAMME',
+                    algorithm=algorithm,
                     n_estimators=20,
                     learning_rate=0.25))])
 
@@ -87,6 +86,7 @@ def parse_args():
     parser.add_argument('--feature', type=int, default=33)
     parser.add_argument('--degree', type=int, default=2)
     parser.add_argument('--kernel', type=str, default="rbf")
+    parser.add_argument('--algorithm', type=str, default="SAMME.R")
     parser.add_argument('--C', type=float, default=0.6)
     parser.add_argument('--auto', action='store_true',
                         help="auto predict by different hyperparameters")
@@ -102,7 +102,7 @@ if __name__ == "__main__":
         print(
             f"AdaBoost\nfeature: {args.feature}\nbase_estimator: {args.base_estimator}")
 
-        Ada = AdaBoost(args.base_estimator, args.n_estimators, args.lr, args.C, f"../../data/ML/{args.feature}_dimension/train.csv",
+        Ada = AdaBoost(args.base_estimator, args.n_estimators, args.algorithm, args.lr, args.C, f"../../data/ML/{args.feature}_dimension/train.csv",
                        f"../../data/ML/{args.feature}_dimension/{rate}valid.csv", f"../../data/ML/{args.feature}_dimension/test_b.csv")
 
         Ada.fit()
@@ -110,11 +110,11 @@ if __name__ == "__main__":
             f"valid:\tPrecision: {Ada.P()}\tRecall: {Ada.R()}\tFscore: {Ada.Fscore()}")
         result = Ada.predict().astype(int)
 
-        # fp = open(
-        #     f"{args.base_estimator}_{args.n_estimators}_{args.lr}_{args.feature}_{args.degree}_{args.kernel}_C-{args.C}_output.txt", "w")
-        # for i in range(result.shape[0]):
-        #     fp.write(result[i].astype(str))
-        #     fp.write('\n')
+        fp = open(
+            f"{args.base_estimator}_{args.n_estimators}_{args.lr}_{args.feature}_{args.degree}_{args.kernel}_C-{args.C}_{args.algorithm}_output.txt", "w")
+        for i in range(result.shape[0]):
+            fp.write(result[i].astype(str))
+            fp.write('\n')
 
     else:
         kernel, degree = args.kernel, args.degree
@@ -125,7 +125,7 @@ if __name__ == "__main__":
         for i in range(1, 500):
             C = float(i) / 10
             if(args.spearman == False):
-                Ada = AdaBoost(args.base_estimator, args.n_estimators, args.lr, args.C, f"../../data/ML/{args.feature}_dimension/train.csv",
+                Ada = AdaBoost(args.base_estimator, args.n_estimators, args.algorithm, args.lr, args.C, f"../../data/ML/{args.feature}_dimension/train.csv",
                                f"../../data/ML/{args.feature}_dimension/{rate}valid.csv", f"../../data/ML/{args.feature}_dimension/test_b.csv")
             else:
                 Ada = AdaBoost(args.base_estimator, args.n_estimators, args.lr, args.C, f"../../data/ML/spearman_selected/train.csv",

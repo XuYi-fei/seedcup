@@ -154,17 +154,19 @@ AdaBoost.py
 
 ### 参数
 
-`--clf`	选择分类器：SVC、LinearSVC
+`--base_estimator`	用于集成的基础分类器
 
-`--kernel`	选择核函数：rbf、poly
+ `--n_estimators`	集成的分类器数量
 
-`--C`	错误项的惩罚系数
+`--lr`	每次训练的学习率
 
-`--auto`	自动把C从0~50以0.1为步长依次拟合预测并保存结果到`auto_result.csv` 中
+`--feature`	数据维度
+
+`--auto`	尚未完善
 
 ### 目前效果
 
-无
+使加权结果提升一个点
 
 &nbsp;
 

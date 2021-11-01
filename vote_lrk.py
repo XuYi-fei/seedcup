@@ -163,10 +163,11 @@ def parse_args():
     parser.add_argument('--Ada_base_estimator',
                         type=str, default="DicisionTree")
     parser.add_argument('--Ada_n_estimators', type=int, default=10)
+    parser.add_argument('--Ada_algorithm', type=str, default="SAMME.R")
     parser.add_argument('--Ada_lr', type=float, default=1.0)
     parser.add_argument('--Ada_C', type=float, default=0.6)
     parser.add_argument('--Ada_result', type=str,
-                        default="history/test_b/bestmodel_on_test_b/DicisionTree_10_1.0_33_2_rbf_C-0.6_output.txt")
+                        default="history/test_b/bestmodel_on_test_b/DicisionTree_10_1.0_33_2_rbf_C-0.6_SAMME.R_output.txt")
 
     return parser.parse_args()
 
@@ -202,8 +203,8 @@ if __name__ == "__main__":
     svm.fit()
     SVM_P1, SVM_P0 = svm.P1(), svm.P0()
 
-    # SVM
-    Ada = AdaBoost(args.Ada_base_estimator, args.Ada_n_estimators, args.Ada_lr, args.Ada_C, f"data/ML/{args.Ada_feature}_dimension/train.csv",
+    # AdaBoost
+    Ada = AdaBoost(args.Ada_base_estimator, args.Ada_n_estimators, args.Ada_algorithm,  args.Ada_lr, args.Ada_C, f"data/ML/{args.Ada_feature}_dimension/train.csv",
                    f"data/ML/{args.Ada_feature}_dimension/{rate}valid.csv", f"data/ML/{args.Ada_feature}_dimension/test_b.csv")
     Ada.fit()
     Ada_P1, Ada_P0 = Ada.P1(), Ada.P0()
