@@ -91,7 +91,7 @@ SVC—poly—degree=2—C=11—0.7656
 
 &nbsp;
 
-# 模型五：决策树
+# 模型五：Decision Tree
 ### 代码说明
 
 - ``decision_tree.py``: 运行决策树train和test的文件
@@ -116,7 +116,62 @@ SVC—poly—degree=2—C=11—0.7656
 
 &nbsp;
 
+# 模型六：Random Forest
+
+### 代码说明
+
+- ``forest.py``: 运行决策树train和test的文件
+- ``config/forest_config.py``: 决策树的相关配置
+- train后的模型文件保存在treeCheckpoints下
+- test时需要指定具体的模型文件，输出到当前运行目录
+### 运行说明
+
+- 具体配置参见`config/tree_decision_config.py`
+- 训练代码示例:
+    ```bash
+    python decision_tree.py
+  ```
+- 测试代码示例:
+    ```bash
+    python decision_tree.py --test True --model treeCheckpoints/10-20-14-18.pkl
+    ```
+
+&nbsp;
+
+# 模型七：AdaBoost
+
+### 说明
+
+使用sklearn库调用AdaBoost的现有模型进行预测
+
+### 相关脚本
+
+AdaBoost.py
+
+### 数据集
+
+`data/ML/`	进行了数据归一化、空值填充-1、正负样本均衡的处理
+
+### 参数
+
+`--base_estimator`	用于集成的基础分类器
+
+ `--n_estimators`	集成的分类器数量
+
+`--lr`	每次训练的学习率
+
+`--feature`	数据维度
+
+`--auto`	尚未完善
+
+### 目前效果
+
+使加权结果提升一个点
+
+&nbsp;
+
 # 模型结果的加权
+
 ### 1. `utils/vote.py`
 - 脚本`utils/vote.py`
 - 此脚本要求文件目录如下:
@@ -163,8 +218,6 @@ SVC—poly—degree=2—C=11—0.7656
 
 &emsp;&emsp;Base0.6581_Res0.8196_LC0.8226_DT0.8142——0.8409，比各模型单独都要好
 
-
-
 &nbsp;
 
 # 数据集说明
@@ -193,10 +246,6 @@ SVC—poly—degree=2—C=11—0.7656
 
 `33_dimension/` 	加入了user_track里的5个维度
 
-`28_normalze/`	归一化后的28维数据集
-
-`33_normalze/`	归一化后的33维数据集
-
 `original/`	原始数据
 
 `unmodified/`	baseline的数据集
@@ -204,6 +253,8 @@ SVC—poly—degree=2—C=11—0.7656
 `ML/`	机器学习算法的数据集，其中 `spearman_selected`下是与label的斯皮尔曼相关系数大于0.1的量组成的数据集
 
 `balanced`	后缀的是正负样本平衡后的数据集
+
+`0.5valid`	前缀的是正负样本比为1：1的验证集，没有此前缀的是6：4的验证集
 
 ### 随机切分数据
 
@@ -215,6 +266,12 @@ SVC—poly—degree=2—C=11—0.7656
 # History目录
 
 用于记录已提交文件测试效果及对应网络参数文件等
+
+`test_a`	为初赛历史记录
+
+`test_b`	为复赛历史记录
+
+
 
 `/Fake1DAttention` 下为只使用全连接，文件命名格式：`数据维度(是否归一化)_训练轮数_测试分数`
 
