@@ -90,7 +90,7 @@ if __name__ == '__main__':
 
     batch_size, in_features, out_features = 30, 33, 2
     # 原数据：1e-3 2.33
-    lr, positive_weight = 1e-5, 1.33
+    lr, positive_weight = 1e-4, 1
     epochs = 300
 
     model = CTNet(batch_size, in_features, out_features)
