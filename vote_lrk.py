@@ -142,14 +142,14 @@ def parse_args():
     parser.add_argument('--Baseline_valid', type=str,
                         default=f"data/unmodified/{rate}valid_balanced.csv")
     parser.add_argument('--Baseline_result', type=str,
-                        default="history/test_b/bestmodel_on_test_b/decision_tree_result.txt")
+                        default="history/test_b/bestmodel_on_test_b/Base_output_0.7454.txt")
 
     parser.add_argument('--DicisionTree_valid', type=str,
                         default=f"data/ML/33_dimension/{rate}valid.csv")
     parser.add_argument('--DicisionTree_pkl', type=str,
                         default="history/test_b/ML/DecisionTree_max-depth=3_0.8142.pkl")
     parser.add_argument('--DicisionTree_result', type=str,
-                        default="history/test_b/bestmodel_on_test_b/decision_tree_result.txt")
+                        default="history/test_b/bestmodel_on_test_b/decision_tree_result_0.8201.txt")
 
     parser.add_argument('--SVM_feature', type=int, default=33)
     parser.add_argument('--SVM_clf', type=str, default="SVC")
@@ -167,7 +167,7 @@ def parse_args():
     parser.add_argument('--Ada_lr', type=float, default=1.0)
     parser.add_argument('--Ada_C', type=float, default=0.6)
     parser.add_argument('--Ada_result', type=str,
-                        default="history/test_b/bestmodel_on_test_b/DicisionTree_10_1.0_33_2_rbf_C-0.6_SAMME_output.txt")
+                        default="history/test_b/bestmodel_on_test_b/DicisionTree_10_1.0_33_2_rbf_C-0.6_SAMME_output_0.8244.txt")
 
     return parser.parse_args()
 
