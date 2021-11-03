@@ -128,14 +128,14 @@ def parse_args():
     parser.add_argument('--ResNet_valid', type=str,
                         default=f"data/unmodified/{rate}valid_balanced.csv")
     parser.add_argument('--ResNet_result', type=str,
-                        default="history/test_b/bestmodel_on_test_b/res_output.txt")
+                        default="history/test_b/bestmodel_on_test_b/res_output_0.8364.txt")
 
     parser.add_argument('--LCNet_model', type=str,
-                        default="history/test_b/LCNet/33维（未归一化）_131轮_0.8226.pt")
+                        default="history/test_b/LCNet/best/33维（未归一化）_131轮_0.8226.pt")
     parser.add_argument('--LCNet_valid', type=str,
                         default=f"data/33_dimension/{rate}valid_banlanced.csv")
     parser.add_argument('--LCNet_result', type=str,
-                        default="history/test_b/bestmodel_on_test_b/LC_output.txt")
+                        default="history/test_b/bestmodel_on_test_b/LC_output_0.8573.txt")
 
     parser.add_argument('--Baseline_model', type=str,
                         default="history/test_b/Fake1DAttention/28维（是否归一化）_30轮_0.6581（假）.pt")
@@ -157,17 +157,17 @@ def parse_args():
     parser.add_argument('--SVM_C', type=float, default=0.6)
     parser.add_argument('--SVM_degree', type=int, default=2)
     parser.add_argument('--SVM_result', type=str,
-                        default="history/test_b/bestmodel_on_test_b/33_SVC_rbf_output.txt")
+                        default="history/test_b/bestmodel_on_test_b/33_SVC_rbf_output_0.8215.txt")
 
     parser.add_argument('--Ada_feature', type=int, default=33)
     parser.add_argument('--Ada_base_estimator',
                         type=str, default="DicisionTree")
     parser.add_argument('--Ada_n_estimators', type=int, default=10)
-    parser.add_argument('--Ada_algorithm', type=str, default="SAMME.R")
+    parser.add_argument('--Ada_algorithm', type=str, default="SAMME")
     parser.add_argument('--Ada_lr', type=float, default=1.0)
     parser.add_argument('--Ada_C', type=float, default=0.6)
     parser.add_argument('--Ada_result', type=str,
-                        default="history/test_b/bestmodel_on_test_b/DicisionTree_10_1.0_33_2_rbf_C-0.6_SAMME.R_output.txt")
+                        default="history/test_b/bestmodel_on_test_b/DicisionTree_10_1.0_33_2_rbf_C-0.6_SAMME_output.txt")
 
     return parser.parse_args()
 
