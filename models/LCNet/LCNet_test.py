@@ -9,7 +9,7 @@
 import torch
 
 from LCNet_model import CTNet
-from res_model import *
+# from res_model import *
 import argparse
 from torch.utils.data import Dataset, DataLoader
 import pandas as pd
@@ -18,11 +18,11 @@ import pandas as pd
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--model', help="path to model",
-                        type=str, default="../../result_version_conv/131_epoc.pt")
+                        type=str, default="../../checkpoints/LCNet/123_epoc_score_0.8263.pt")
     parser.add_argument('-i', '--input', help="path to input files",
-                        type=str, default="../../data/test/test_info.csv")
+                        type=str, default="../../data/33_dimension/test_b.csv")
     parser.add_argument(
-        '-o', '--output', help="path to output files", type=str, default="LC_output.txt")
+        '-o', '--output', help="path to output files", type=str, default="LC_output_0.8263.txt")
     parser.add_argument('--input-features',
                         help="input dimension for model", type=int, default=33)
     parser.add_argument('--output-features',

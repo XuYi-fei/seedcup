@@ -84,7 +84,7 @@ def valid(dataloader, model, loss_fn, device):
         print(f"{Fore.CYAN + '[valid]===>'} "
               f"loss: {loss}  acc: {100 * Accuracy(pred, Y)}%  precision: {Precision(pred, Y)}  recall: {Recall(pred, Y)}   fscore: {Fscore(pred, Y)}"
               f"{'' + Fore.RESET}")
-
+        return loss
 
 # For updating learning rate
 def update_lr(optimizer, lr):
@@ -97,11 +97,11 @@ def parse_args():
     parser.add_argument('--train', type=str,
                         default="../../data/33_dimension/train.csv")
     parser.add_argument('--valid', type=str,
-                        default=f"../../data/33_dimension/{rate}valid.csv")
+                        default=f"../../data/33_dimension/{rate}valid_banlanced.csv")
     parser.add_argument('--in_feature', type=int,
                         default=33)
     parser.add_argument('--device', type=str,
-                        default='cuda')
+                        default='cpu')
 
     return parser.parse_args()
 
@@ -113,9 +113,9 @@ if __name__ == '__main__':
     torch.manual_seed(777)
     device = torch.device(args.device)
 
-    batch_size, in_features, out_features = 30, args.in_feature, 2
+    batch_size, in_features, out_features = 24, args.in_feature, 2
     # 原数据：1e-3 2.33
-    lr, positive_weight = 1e-3, 1.33
+    lr, positive_weight = 1e-4, 1.5
     epochs = 150
 
     model = CTNet(batch_size, in_features, out_features)
@@ -137,10 +137,13 @@ if __name__ == '__main__':
     if(os.path.isdir("../../checkpoints/LCNet") == 0):
         os.mkdir("../../checkpoints/LCNet")
 
+    loss = 10000
     for t in range(epochs):
         print(f"{Fore.GREEN + '===>'} Epoch {t + 1} {'' + Fore.RESET}\n"
               "---------------------------------------")
         train(train_dataloader, model, loss_fn,
               optimizer, device, positive_weight)
-        valid(valid_dataloader, model, loss_fn, device)
-        torch.save(model.state_dict(), f"../../checkpoints/LCNet/{t}_epoc.pt")
+        new_loss = valid(valid_dataloader, model, loss_fn, device)
+        if new_loss < loss:
+            loss = new_loss
+            torch.save(model.state_dict(), f"../../checkpoints/LCNet/{t}_epoc_loss_{loss}.pt")
